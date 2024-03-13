@@ -13,7 +13,7 @@ using System.Windows.Input;
 namespace ElysiumEditor.GameProject
 {
     [DataContract(Name = "Game")]
-    public class Project : ViewModelBase
+    internal class Project : ViewModelBase
     {
         public static string Extension { get; } = ".elys";
         [DataMember]
