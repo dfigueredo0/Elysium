@@ -158,9 +158,9 @@ namespace ElysiumEditor.GameProject
             }
             catch (Exception ex)
             {
-                // TODO: log error (own log)
                 Debug.WriteLine(ex);
-                return string.Empty;
+                Logger.Log(MessageType.Error, $"Failed to create {template.ProjectType}");
+                throw;
             }
         }
 
@@ -187,8 +187,9 @@ namespace ElysiumEditor.GameProject
             } 
             catch (Exception ex)  
             { 
-                // TODO: log error (own log)
                 Debug.WriteLine(ex);
+                Logger.Log(MessageType.Error, $"Failed to read project templates.");
+                throw;
             }
         }
     }

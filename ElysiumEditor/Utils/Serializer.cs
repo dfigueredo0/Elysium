@@ -19,8 +19,9 @@ namespace ElysiumEditor.Utils
             } 
             catch (Exception ex)
             {
-                // TODO: log error
                 Debug.WriteLine(ex);
+                Logger.Log(MessageType.Error, $"Failed to serialize {instance} to {path}");
+                throw;
             }
         }
 
@@ -35,9 +36,9 @@ namespace ElysiumEditor.Utils
             }
             catch (Exception ex)
             {
-                // TODO: log error
                 Debug.WriteLine(ex);
-                return default(T);
+                Logger.Log(MessageType.Error, $"Failed to deserialize {path}");
+                throw;
             }
         }
     }

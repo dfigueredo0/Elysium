@@ -94,7 +94,8 @@ namespace ElysiumEditor.GameProject
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                // TODO: log errors
+                Logger.Log(MessageType.Error, $"Failed to read project data");
+                throw;
             }
         }
     }

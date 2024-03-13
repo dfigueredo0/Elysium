@@ -1,6 +1,9 @@
-﻿using ElysiumEditor.GameProject;
+﻿using ElysiumEditor.Components;
+using ElysiumEditor.GameProject;
+using ElysiumEditor.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,6 +25,37 @@ namespace ElysiumEditor.Editors
         public ProjectLayoutView()
         {
             InitializeComponent();
+        }
+
+        private void OnAddGame_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            var vm = btn.DataContext as Scene;
+            vm.AddGameEntityCommand.Execute(new GameEntity(vm) { Name = "Empty Game Entity"});
+        }
+
+        private void OnGameEntities_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            GameEntityView.Instance.DataContext = null;
+            if(e.AddedItems.Count > 0)
+                GameEntityView.Instance.DataContext = (sender as ListBox).SelectedItems[0];
+
+            var listBox = sender as ListBox;
+            var newSelection = listBox.SelectedItems.Cast<GameEntity>().ToList();
+            var prevSelection = newSelection.Except(e.AddedItems.Cast<GameEntity>()).Concat(e.RemovedItems.Cast<GameEntity>()).ToList();
+
+            Project.UndoRedo.Add(new UndoRedoAction(
+                () => 
+                {
+                    listBox.UnselectAll();
+                    prevSelection.ForEach(x => (listBox.ItemContainerGenerator.ContainerFromItem(x) as ListBoxItem).IsSelected = true);
+                },
+                () => 
+                {
+                    listBox.UnselectAll();
+                    newSelection.ForEach(x => (listBox.ItemContainerGenerator.ContainerFromItem(x) as ListBoxItem).IsSelected = true);
+                },
+                "Selection Changed"));
         }
     }
 }

@@ -21,7 +21,7 @@ namespace ElysiumEditor.GameProject
         [DataMember]
         public string Path { get; private set; }
 
-        public string FullPath => $"{Path}{Name}{Extension}";
+        public string FullPath => $@"{Path}{Name}\{Name}{Extension}";
 
         [DataMember(Name = "Scenes")]
         private ObservableCollection<Scene> _scenes = new ObservableCollection<Scene>();
@@ -45,18 +45,20 @@ namespace ElysiumEditor.GameProject
 
         public static UndoRedo UndoRedo { get; } = new UndoRedo();
 
-        private void AddSceneInternal(string sceneName)
+        public ICommand UndoCommand { get; private set; }
+        public ICommand RedoCommand { get; private set; }
+        public ICommand AddSceneCommand { get; private set; }
+        public ICommand RemoveSceneCommand { get; private set; }
+        public ICommand SaveCommand { get; private set; }
+
+        private void AddScene(string sceneName)
         {
             Debug.Assert(!string.IsNullOrEmpty(sceneName.Trim()));
             _scenes.Add(new Scene(this, sceneName));
         }
 
-        public ICommand Undo {  get; private set; }
-        public ICommand Redo {  get; private set; }
-        public ICommand AddScene {  get; private set; }
-        public ICommand RemoveScene {  get; private set; }
 
-        private void RemoveSceneInternal(Scene scene)
+        private void RemoveScene(Scene scene)
         {
             Debug.Assert(_scenes.Contains(scene));
             _scenes.Remove(scene);
@@ -70,12 +72,13 @@ namespace ElysiumEditor.GameProject
 
         public void Unload()
         {
-
+            UndoRedo.Reset();
         }
 
         public static void Save(Project project)
         {
             Serializer.ToFile(project, project.FullPath);
+            Logger.Log(MessageType.Info, $"Project saved to {project.FullPath}");
         }
 
         [OnDeserialized]
@@ -88,29 +91,30 @@ namespace ElysiumEditor.GameProject
             }
             ActiveScene = Scenes.FirstOrDefault(x => x.IsActive);
 
-            AddScene = new RelayCommand<object>(x =>
+            AddSceneCommand = new RelayCommand<object>(x =>
             {
-                AddSceneInternal($"New Scene {_scenes.Count}");
+                AddScene($"New Scene {_scenes.Count}");
                 var newScene = _scenes.Last();
                 var sceneIndex = _scenes.Count - 1;
-                UndoRedo.Add(new UndoReadAction(
-                    () => RemoveSceneInternal(newScene),
+                UndoRedo.Add(new UndoRedoAction(
+                    () => RemoveScene(newScene),
                     () => _scenes.Insert(sceneIndex, newScene),
                     $"Add {newScene.Name}"));
             });
 
-            RemoveScene = new RelayCommand<Scene>(x =>
+            RemoveSceneCommand = new RelayCommand<Scene>(x =>
             {
                 var sceneIndex = _scenes.IndexOf(x);
-                RemoveSceneInternal(x);
-                UndoRedo.Add(new UndoReadAction(
+                RemoveScene(x);
+                UndoRedo.Add(new UndoRedoAction(
                     () => _scenes.Insert(sceneIndex, x),
-                    () => RemoveSceneInternal(x),
+                    () => RemoveScene(x),
                     $"Remove {x.Name}"));
             }, x => !x.IsActive);
 
-            Undo = new RelayCommand<object>(x => UndoRedo.Undo());
-            Redo = new RelayCommand<object>(x => UndoRedo.Redo());
+            UndoCommand = new RelayCommand<object>(x => UndoRedo.Undo());
+            RedoCommand = new RelayCommand<object>(x => UndoRedo.Redo());
+            SaveCommand = new RelayCommand<object>(x => Save(this));
         }
 
         public Project(string name, string path)
