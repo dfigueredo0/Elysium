@@ -21,6 +21,11 @@ namespace ElysiumEditor.GameProject
         public OpenProjectView()
         {
             InitializeComponent();
+            Loaded += (s, e) =>
+            {
+                var item = projectListBox.ItemContainerGenerator.ContainerFromIndex(projectListBox.SelectedIndex) as ListBoxItem;
+                item?.Focus();
+            };
         }
 
         private void OnOpen_Button_Click(object sender, RoutedEventArgs e)
