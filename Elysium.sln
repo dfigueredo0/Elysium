@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElysiumEditor", "ElysiumEditor\ElysiumEditor.csproj", "{B206617B-857C-491A-A06B-1B86F33AFF62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElysiumEditor", "ElysiumEditor\ElysiumEditor.csproj", "{B206617B-857C-491A-A06B-1B86F33AFF62}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcxproj", "{CE533D4D-7FCE-4B6D-8648-D409118F9875}"
 EndProject
@@ -13,14 +13,14 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CE533D4D-7FCE-4B6D-8648-D409118F9875}.Debug|x64.ActiveCfg = Debug|x64
-		{CE533D4D-7FCE-4B6D-8648-D409118F9875}.Debug|x64.Build.0 = Debug|x64
-		{CE533D4D-7FCE-4B6D-8648-D409118F9875}.Release|x64.ActiveCfg = Release|x64
-		{CE533D4D-7FCE-4B6D-8648-D409118F9875}.Release|x64.Build.0 = Release|x64
 		{B206617B-857C-491A-A06B-1B86F33AFF62}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{B206617B-857C-491A-A06B-1B86F33AFF62}.Debug|x64.Build.0 = Debug|Any CPU
 		{B206617B-857C-491A-A06B-1B86F33AFF62}.Release|x64.ActiveCfg = Release|Any CPU
 		{B206617B-857C-491A-A06B-1B86F33AFF62}.Release|x64.Build.0 = Release|Any CPU
+		{CE533D4D-7FCE-4B6D-8648-D409118F9875}.Debug|x64.ActiveCfg = Debug|x64
+		{CE533D4D-7FCE-4B6D-8648-D409118F9875}.Debug|x64.Build.0 = Debug|x64
+		{CE533D4D-7FCE-4B6D-8648-D409118F9875}.Release|x64.ActiveCfg = Release|x64
+		{CE533D4D-7FCE-4B6D-8648-D409118F9875}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
