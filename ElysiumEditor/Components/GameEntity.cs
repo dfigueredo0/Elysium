@@ -53,9 +53,6 @@ namespace ElysiumEditor.Components
         private readonly ObservableCollection<Component> _components = new ObservableCollection<Component>();
         public ReadOnlyObservableCollection<Component> Components { get; private set; }
 
-        public ICommand RenameCommand { get; private set; }
-        public ICommand IsEnableCommand { get; private set; }
-
         [OnDeserialized]
         void OnDeserialized(StreamingContext context)
         {
@@ -64,22 +61,6 @@ namespace ElysiumEditor.Components
                 Components = new ReadOnlyObservableCollection<Component>(_components);
                 OnPropertyChanged(nameof(Components));
             }
-
-            RenameCommand = new RelayCommand<string>(x =>
-            {
-                var oldName = _name;
-                Name = x;
-
-                Project.UndoRedo.Add(new UndoRedoAction(nameof(Name), this, oldName, x, $"Rename entity '{oldName}' to '{x}'"));
-            }, x => x != _name);
-
-            IsEnableCommand = new RelayCommand<bool>(x =>
-            {
-                var oldVal = _isEnabled;
-                IsEnabled = x;
-
-                Project.UndoRedo.Add(new UndoRedoAction(nameof(IsEnabled), this, oldVal, x, x ? $"Enable {Name}" : $"Disable {Name}"));
-            });
         }
 
         public GameEntity(Scene scene)
