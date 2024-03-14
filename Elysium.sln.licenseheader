@@ -1,0 +1,18 @@
+﻿extensions: designer.cs generated.cs
+extensions: .cs .cpp .h
+// Copyright (c) 2024 Dylan Figueredo
+// Distributed under the MIT license. See the LICENSE file in the project root for more information
+extensions: .aspx .ascx
+<%-- 
+	Copyright (c) 2024 Dylan Figueredo
+	Distributed under the MIT license. See the LICENSE file in the project root for more information.
+--%>
+extensions: .vb
+' Copyright (c) 2024 Dylan Figueredo
+' Distributed under the MIT license. See the LICENSE file in the project root for more information.
+
+extensions:  .xml .config .xsd
+<!--
+	Copyright (c) 2024 Dylan Figueredo
+	Distributed under the MIT license. See the LICENSE file in the project root for more information
+-->

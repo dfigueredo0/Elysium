@@ -1,6 +1,6 @@
 ﻿<!--
     Copyright (c) Dylan Figueredo
-    Distributed unter the MIT license. See the LICENSE file in the project root for more information
+    Distributed under the MIT license. See the LICENSE file in the project root for more information
 -->
 <UserControl x:Class="ElysiumEditor.Editors.GameEntityView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
