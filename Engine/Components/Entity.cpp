@@ -40,7 +40,7 @@ namespace elysium::game_entity {
 		return new_entity;
 	}
 
-	void remove_game_entity(entity e) {
+	void destroy_game_entity(entity e) {
 		const entity_id id{ e.get_id() };
 		const id::id_type index{ id::index(id) };
 		assert(is_alive(e));

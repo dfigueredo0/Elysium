@@ -1,4 +1,7 @@
-﻿using ElysiumEditor.GameProject;
+﻿// Copyright (c) 2024 Dylan Figueredo
+// Distributed under the MIT license. See the LICENSE file in the project root for more information
+using ElysiumEditor.dllWrapper;
+using ElysiumEditor.GameProject;
 using ElysiumEditor.Utils;
 using System;
 using System.Collections.Generic;
@@ -15,8 +18,46 @@ namespace ElysiumEditor.Components
     [KnownType(typeof(Transform))]
     class GameEntity : ViewModelBase
     {
+        private int _entityId = ID.INVALID_ID;
+        public int EntityId
+        {
+            get { return _entityId; }
+            set
+            {
+                if (_entityId != value)
+                {
+                    _entityId = value;
+                    OnPropertyChanged(nameof(EntityId));
+                }
+            }
+        }
+
+        private bool _isActive;
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                if (_isActive != value)
+                {
+                    _isActive = value;
+                    if (_isActive)
+                    {
+                        EntityId = EngineAPI.CreateGameEntity(this);
+                        Debug.Assert(ID.IsValid(_entityId));
+                    }
+                    else
+                    {
+                        EngineAPI.DestroyGameEntity(this);
+                    }
+                    OnPropertyChanged(nameof(IsActive));
+                }
+            }
+        }
+
+
         private bool _isEnabled;
-        [DataMember]   
+        [DataMember]
         public bool IsEnabled
         {
             get { return _isEnabled; }
@@ -53,10 +94,14 @@ namespace ElysiumEditor.Components
         private readonly ObservableCollection<Component> _components = new ObservableCollection<Component>();
         public ReadOnlyObservableCollection<Component> Components { get; private set; }
 
+        public Component GetComponent(Type type) => Components.FirstOrDefault(x => x.GetType() == type);
+
+        public T GetComponent<T>() where T : Component => GetComponent(typeof(T)) as T;
+
         [OnDeserialized]
         void OnDeserialized(StreamingContext context)
         {
-            if(_components != null)
+            if (_components != null)
             {
                 Components = new ReadOnlyObservableCollection<Component>(_components);
                 OnPropertyChanged(nameof(Components));
@@ -91,7 +136,7 @@ namespace ElysiumEditor.Components
         }
 
         private string _name;
-        public string  Name
+        public string Name
         {
             get { return _name; }
             set
@@ -116,7 +161,7 @@ namespace ElysiumEditor.Components
                 case nameof(IsEnabled):
                     SelectedEntities.ForEach(x => x.IsEnabled = IsEnabled.Value);
                     return true;
-                case nameof(Name): 
+                case nameof(Name):
                     SelectedEntities.ForEach(x => x.Name = Name);
                     return true;
                 default:
@@ -180,7 +225,7 @@ namespace ElysiumEditor.Components
             Debug.Assert(entities?.Any() == true);
             Components = new ReadOnlyObservableCollection<IMSComponent>(_components);
             SelectedEntities = entities;
-            PropertyChanged += (s, e) => 
+            PropertyChanged += (s, e) =>
                 {
                     if (_enableUpdates)
                         UpdateGameEntities(e.PropertyName);

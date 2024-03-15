@@ -52,15 +52,24 @@ namespace ElysiumEditor.GameProject
         public ICommand AddGameEntityCommand { get; private set; }
         public ICommand RemoveGameEntityCommand { get; private set; }
 
-        private void AddGameEntity(GameEntity entity)
+        private void AddGameEntity(GameEntity entity, int index = -1)
         {
             Debug.Assert(!_gameEntities.Contains(entity));
+            entity.IsActive = IsActive;
+            if(index == -1)
+            {
+                _gameEntities.Add(entity);
+            } else
+            {
+                _gameEntities.Insert(index, entity);
+            }
             _gameEntities.Add(entity);
         }
 
         private void RemoveGameEntity(GameEntity entity)
         {
             Debug.Assert(_gameEntities.Contains(entity));
+            entity.IsActive = false;
             _gameEntities.Remove(entity);
         }
 
@@ -73,6 +82,11 @@ namespace ElysiumEditor.GameProject
                 OnPropertyChanged(nameof(GameEntities));
             }
 
+            foreach (var entity in _gameEntities)
+            {
+                entity.IsActive = IsActive;
+            }
+
             AddGameEntityCommand = new RelayCommand<GameEntity>(x =>
             {
                 AddGameEntity(x);
@@ -80,7 +94,7 @@ namespace ElysiumEditor.GameProject
 
                 Project.UndoRedo.Add(new UndoRedoAction(
                     () => RemoveGameEntity(x),
-                    () => _gameEntities.Insert(entityIndex, x),
+                    () => AddGameEntity(x, entityIndex),
                     $"Add {x.Name} to {Name}"));
             });
 
@@ -90,7 +104,7 @@ namespace ElysiumEditor.GameProject
                 RemoveGameEntity(x);
 
                 Project.UndoRedo.Add(new UndoRedoAction(
-                    () => _gameEntities.Insert(entityIndex, x),
+                    () => AddGameEntity(x, entityIndex),
                     () => RemoveGameEntity(x),
                     $"Remove {x.Name}"));
             });

@@ -15,7 +15,7 @@ namespace elysium {
 		};
 
 		entity create_game_entity(const entity_info& info);
-		void remove_game_entity(entity e);
+		void destroy_game_entity(entity e);
 		bool is_alive(entity e);
 	}
 }
