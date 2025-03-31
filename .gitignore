@@ -1,7 +1,13 @@
 # Directories
 .vs/
-bin/
-bin_int/
+/build/
+/bin/
+/lib/
+/*.sln
+/*.vcxproj
 
 # Files
 *.user
+*.obj
+*.pdb
+*.bat

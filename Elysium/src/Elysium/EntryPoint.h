@@ -7,7 +7,7 @@ extern Elysium::Application* Elysium::CreateApplication();
 int main(int argc, char** argv) {
 	Elysium::Log::Init();
 	ELY_CORE_WARN("Initialized Log!");
-	Elysium::Log::GetClientLogger()->info("Initialized Log!");
+	ELY_INFO("Initialized Log!");
 
 	auto app = Elysium::CreateApplication();
 	app->Run();
