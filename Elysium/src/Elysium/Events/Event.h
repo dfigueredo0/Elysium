@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Elysium/Core.h"
+#include "elypch.h"
 
-#include <string>
-#include <functional>
+#include "Elysium/Core.h"
 
 namespace Elysium {
 	enum class EventType {

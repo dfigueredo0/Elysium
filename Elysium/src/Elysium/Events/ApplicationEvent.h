@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Elysium {
 	class ELYSIUM_API WindowResizeEvent : public Event {
 	public:

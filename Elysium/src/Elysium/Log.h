@@ -4,6 +4,21 @@
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 
+
+namespace Elysium {
+	class ELYSIUM_API Log {
+	public:
+		static void Init();
+
+		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
+		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
+	private:
+		static std::shared_ptr<spdlog::logger> s_CoreLogger;
+		static std::shared_ptr<spdlog::logger> s_ClientLogger;
+	};
+
+}
+
 #pragma region Core Log Macros
 #define ELY_CORE_TRACE(...)::Elysium::Log::GetCoreLogger()->trace(__VA_ARGS__)
 #define ELY_CORE_INFO(...)::Elysium::Log::GetCoreLogger()->info(__VA_ARGS__)
@@ -19,20 +34,3 @@
 #define ELY_ERROR(...)::Elysium::Log::GetClientLogger()->error(__VA_ARGS__)
 #define ELY_FATAL(...)::Elysium::Log::GetClientLogger()->critical(__VA_ARGS__)
 #pragma endregion
-
-
-namespace Elysium
-{
-	class ELYSIUM_API Log
-	{
-	public:
-		static void Init();
-
-		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
-		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
-	private:
-		static std::shared_ptr<spdlog::logger> s_CoreLogger;
-		static std::shared_ptr<spdlog::logger> s_ClientLogger;
-	};
-
-}
