@@ -4,11 +4,11 @@
 /bin/
 /intermediate/
 /lib/
-/*.sln
-/*.vcxproj
 
 # Files
 *.user
 *.obj
 *.pdb
 *.bat
+*.vcxproj*
+*.sln
