@@ -1,16 +1,27 @@
-#Elysium Root
-cmake_minimum_required(VERSION 3.15)
-project(ElysiumEngine)
- 
-# C++ standard setup
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
- 
-# Output directory structure
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
- 
-# Add subdirectories for the actual projects
-add_subdirectory(Elysium)
-add_subdirectory(Sandbox)
+#Elysium CMakeLists.txt
+
+file(GLOB_RECURSE ELYSIUM_SRC CONFIGURE_DEPENDS "src/Elysium/*.cpp" "src/*.cpp")
+file(GLOB_RECURSE ELYSIUM_HEADERS CONFIGURE_DEPENDS "src/Elysium/*.h" "src/*.h")
+
+set(ALL_ELYSIUM_FILES ${ELYSIUM_SRC} ${ELYSIUM_HEADERS})
+list(APPEND ALL_ELYSIUM_FILES src/elypch.cpp)
+
+add_library(ElysiumLib SHARED ${ALL_ELYSIUM_FILES})
+
+target_include_directories(ElysiumLib PUBLIC src)
+
+target_compile_options(ElysiumLib PRIVATE /utf-8)
+target_precompile_headers(ElysiumLib PRIVATE src/elypch.h)
+
+# Definitions
+target_compile_definitions(ElysiumLib PUBLIC ELY_PLATFORM_WINDOWS)
+target_compile_definitions(ElysiumLib PRIVATE ELY_BUILD_DLL)
+
+# Add vendors
+target_include_directories(ElysiumLib PUBLIC vendor/spdlog/include)
+
+# Folder Layout
+source_group(
+    TREE ${CMAKE_CURRENT_SOURCE_DIR}/src
+    FILES ${ALL_ELYSIUM_FILES}
+)

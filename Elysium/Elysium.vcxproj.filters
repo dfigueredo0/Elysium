@@ -27,6 +27,9 @@
     <ClCompile Include="src\Platform\Linux\WaylandWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Elysium\Log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Elysium.h">
@@ -65,8 +68,12 @@
     <ClInclude Include="src\Elysium\Events\MouseEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Elysium\Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\CMakeLists.txt" />
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
 </Project>

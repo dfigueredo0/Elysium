@@ -17,6 +17,14 @@ namespace Elysium
 
 	void Application::Run()
 	{
+		WindowResizeEvent e(1280, 720);
+		if (e.IsInCategory(EventCategoryApplication)) {
+			ELY_CORE_TRACE(e.ToString());
+		}
+		if (e.IsInCategory(EventCategoryInput)) {
+			ELY_CORE_TRACE(e.ToString());
+		}
+
 		while (m_Running)
 		{
 			m_Window->OnUpdate();

@@ -1,0 +1,9 @@
+﻿  Application.cpp
+C:\repos\Elysium\Elysium\src\Elysium\Core.h(10,1): error C1189: #error:  Elysium only supports Windows!
+  (compiling source file '/src/Elysium/Application.cpp')
+  
+  Log.cpp
+C:\repos\Elysium\Elysium\src\Elysium\Core.h(10,1): error C1189: #error:  Elysium only supports Windows!
+  (compiling source file '/src/Elysium/Log.cpp')
+  
+  Generating Code...

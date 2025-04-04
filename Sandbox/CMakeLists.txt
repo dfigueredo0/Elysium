@@ -1,3 +1,5 @@
+#Sandbox CMakeLists.txt
+
 file(GLOB_RECURSE SANDBOX_SRC CONFIGURE_DEPENDS src/*.cpp src/*.h)
 
 add_executable(SandboxApp ${SANDBOX_SRC})
