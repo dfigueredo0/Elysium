@@ -2,6 +2,7 @@
 .vs/
 /build/
 /bin/
+/intermediate/
 /lib/
 /*.sln
 /*.vcxproj
