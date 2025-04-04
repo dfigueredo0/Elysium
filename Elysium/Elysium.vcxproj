@@ -10,26 +10,12 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\Elysium\Core.h" />
-    <ClCompile Include="src\Elysium\Application.cpp" />
-    <ClCompile Include="src\Elysium\Log.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Elysium.h" />
-    <ClInclude Include="src\Elysium\Application.h" />
-    <ClInclude Include="src\Elysium\EntryPoint.h" />
-    <ClInclude Include="src\Elysium\Log.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="CMakeLists.txt" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{0027dc7a-b92a-4943-a3be-0025e16184a4}</ProjectGuid>
+    <ProjectGuid>{581f47ea-86e9-4c2d-b8d6-6bd22ab1589b}</ProjectGuid>
     <RootNamespace>Elysium</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -59,21 +45,20 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)_$(Platform)\$(ProjectName)\</OutDir>
-    <IntDir>$(SolutionDir)bin_int\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)intermediate\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)_$(Platform)\$(ProjectName)\</OutDir>
-    <IntDir>$(SolutionDir)bin_int\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)intermediate\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>ELY_PLATFORM_WINDOWS;ELY_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Elysium\vendor\spdlog\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -86,11 +71,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>ELY_PLATFORM_WINDOWS;ELY_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Elysium\vendor\spdlog\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -99,6 +83,29 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\elypch.cpp" />
+    <ClCompile Include="src\Elysium\Application.cpp" />
+    <ClCompile Include="src\Platform\Linux\WaylandWindow.cpp" />
+    <ClCompile Include="src\Platform\Windows\Win32Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\elypch.h" />
+    <ClInclude Include="src\Elysium.h" />
+    <ClInclude Include="src\Elysium\Application.h" />
+    <ClInclude Include="src\Elysium\Core.h" />
+    <ClInclude Include="src\Elysium\EntryPoint.h" />
+    <ClInclude Include="src\Elysium\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\Elysium\Events\Event.h" />
+    <ClInclude Include="src\Elysium\Events\MouseEvent.h" />
+    <ClInclude Include="src\Elysium\Events\KeyEvent.h" />
+    <ClInclude Include="src\Platform\Linux\WaylandWindow.h" />
+    <ClInclude Include="src\Platform\Windows\Win32Window.h" />
+    <ClInclude Include="src\Elysium\Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\CMakeLists.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

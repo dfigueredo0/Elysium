@@ -19,4 +19,3 @@ namespace Elysium {
 	// Defined in CLIENT
 	Application* CreateApplication();
 }
-	

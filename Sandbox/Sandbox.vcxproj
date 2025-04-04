@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{5c46c555-a587-4cea-975c-aaf7b8677e28}</ProjectGuid>
+    <ProjectGuid>{3abb1201-bc4a-4a4a-a7ca-dd0a49a44f3c}</ProjectGuid>
     <RootNamespace>Sandbox</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -45,21 +45,20 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)_$(Platform)\$(ProjectName)\</OutDir>
-    <IntDir>$(SolutionDir)bin_int\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)intermediate\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)_$(Platform)\$(ProjectName)\</OutDir>
-    <IntDir>$(SolutionDir)bin_int\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)intermediate\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>ELY_PLATFORM_WINDOWS;_MBSC;%(PreprocessorDefinition)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Elysium\src;$(SolutionDir)Elysium\vendor\spdlog\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -72,11 +71,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>ELY_PLATFORM_WINDOWS;_MBSC;%(PreprocessorDefinition)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Elysium\src;$(SolutionDir)Elysium\vendor\spdlog\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -87,7 +85,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ProjectReference Include="..\Elysium\Elysium.vcxproj">
-      <Project>{0027dc7a-b92a-4943-a3be-0025e16184a4}</Project>
+      <Project>{581f47ea-86e9-4c2d-b8d6-6bd22ab1589b}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

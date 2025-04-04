@@ -15,31 +15,58 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Elysium\Core.h">
+    <ClCompile Include="src\elypch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Elysium\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Elysium\Log.cpp">
+    <ClCompile Include="src\Platform\Windows\Win32Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Linux\WaylandWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Elysium.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\elypch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\Elysium\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Elysium.h">
+    <ClInclude Include="src\Elysium\Core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Elysium\EntryPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Elysium\Log.h">
+    <ClInclude Include="src\Elysium\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\Win32Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Linux\WaylandWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Elysium\Events\Event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Elysium\Events\ApplicationEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Elysium\Events\KeyEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Elysium\Events\MouseEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="CMakeLists.txt" />
+    <Text Include="src\CMakeLists.txt" />
   </ItemGroup>
 </Project>

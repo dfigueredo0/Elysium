@@ -9,7 +9,7 @@ namespace Elysium {
 
 		inline float GetX() const { return m_MouseX; }
 		inline float GetY() const { return m_MouseY; }
-		
+
 		std::string ToString() const override {
 			std::stringstream ss;
 			ss << "MouseMovedEvent: " << m_MouseX << ", " << m_MouseY;
@@ -17,7 +17,7 @@ namespace Elysium {
 		}
 
 		EVENT_CLASS_TYPE(MouseMoved)
-		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+			EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	private:
 		float m_MouseX, m_MouseY;
 	};
@@ -36,7 +36,7 @@ namespace Elysium {
 		}
 
 		EVENT_CLASS_TYPE(MouseScrolled)
-		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+			EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	private:
 		float m_XOffset, m_YOffset;
 	};
@@ -54,7 +54,7 @@ namespace Elysium {
 	class ELYSIUM_API MouseButtonPressedEvent : public MouseButtonEvent {
 	public:
 		MouseButtonPressedEvent(int button) : MouseButtonEvent(button) {}
-		
+
 		std::string ToString() const override {
 			std::stringstream ss;
 			ss << "MouseButtonPressedEvent: " << m_Button;

@@ -14,7 +14,8 @@ namespace Elysium {
 
 		WindowProps(const std::string& title = "Elysium",
 			unsigned int width = 1280,
-			unsigned int height = 720) : Title(title), Width(width), Height(height) { }
+			unsigned int height = 720) : Title(title), Width(width), Height(height) {
+		}
 	};
 
 	class ELYSIUM_API Window {

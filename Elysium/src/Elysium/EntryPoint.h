@@ -13,4 +13,3 @@ int main(int argc, char** argv) {
 	delete app;
 }
 #endif // ELY_PLATFORM_WINDOWS
-
