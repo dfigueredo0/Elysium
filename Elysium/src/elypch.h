@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Elysium/Log.h"
 
 #ifdef ELY_PLATFORM_WINDOWS
 	#include <Windows.h>

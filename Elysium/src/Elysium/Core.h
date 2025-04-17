@@ -18,7 +18,6 @@
 #define ELY_CORE_ASSERT(x, ...)
 #endif // ELY_ENABLE_ASSERTS
 
-
 #define BIT(x) (1 << x)
 
-#include "Log.h"
+#define ELY_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
