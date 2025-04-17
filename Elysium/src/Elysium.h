@@ -4,6 +4,7 @@
 
 #include "Elysium/Core.h"
 #include "Elysium/Application.h"
+#include "Elysium/Layers/Layer.h"
 #include "Elysium/Log.h"
 
 #pragma region Entry Point

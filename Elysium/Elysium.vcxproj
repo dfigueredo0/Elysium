@@ -61,10 +61,13 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>elypch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc0222</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);glfw3.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -79,12 +82,15 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>elypch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc0222</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);glfw3.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -93,6 +99,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Elysium\Application.cpp" />
+    <ClCompile Include="src\Elysium\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Elysium\Layers\Layer.cpp" />
+    <ClCompile Include="src\Elysium\Layers\LayerStack.cpp" />
     <ClCompile Include="src\Elysium\Log.cpp" />
     <ClCompile Include="src\Platform\Linux\WaylandWindow.cpp" />
     <ClCompile Include="src\Platform\Windows\Win32Window.cpp" />
@@ -107,6 +116,9 @@
     <ClInclude Include="src\Elysium\Events\Event.h" />
     <ClInclude Include="src\Elysium\Events\MouseEvent.h" />
     <ClInclude Include="src\Elysium\Events\KeyEvent.h" />
+    <ClInclude Include="src\Elysium\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\Elysium\Layers\Layer.h" />
+    <ClInclude Include="src\Elysium\Layers\LayerStack.h" />
     <ClInclude Include="src\Elysium\Log.h" />
     <ClInclude Include="src\Platform\Linux\WaylandWindow.h" />
     <ClInclude Include="src\Platform\Windows\Win32Window.h" />

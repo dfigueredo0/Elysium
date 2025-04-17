@@ -2,6 +2,8 @@
 
 #include "Elysium/Window.h"
 
+#include <GLFW/glfw3.h>
+
 namespace Elysium {
 	class Win32_Window : public Window {
 	public:
@@ -20,14 +22,24 @@ namespace Elysium {
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
 	private:
+		GLFWwindow* m_Window;
 
 		struct WindowData {
 			std::string Title;
-			unsigned int Width, Height;
-			bool VSync;
+			unsigned int Width = 1280, Height = 720;
+			bool VSync = true;
 			EventCallbackFn EventCallback;
 		};
 
 		WindowData m_Data;
+
+		static void WindowResizeCallback(GLFWwindow*, int, int);
+		static void WindowCloseCallback(GLFWwindow*);
+		static void KeyCallback(GLFWwindow*, int, int, int, int);
+		static void MouseButtonCallback(GLFWwindow*, int, int, int);
+		static void ScrollCallback(GLFWwindow*, double, double);
+		static void CursorPosCallback(GLFWwindow*, double, double);
+
+		void RegisterCallbacks();
 	};
 }
