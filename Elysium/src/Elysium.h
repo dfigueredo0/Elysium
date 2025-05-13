@@ -7,6 +7,9 @@
 #include "Elysium/Layers/Layer.h"
 #include "Elysium/Log.h"
 
+#include "Elysium/Input.h"
+#include "Elysium/KeyCodes.h"
+
 #include "Elysium/ImGui/ImGuiLayer.h"
 
 #pragma region Entry Point
