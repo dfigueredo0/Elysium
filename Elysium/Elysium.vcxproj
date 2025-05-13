@@ -104,6 +104,7 @@
     <ClCompile Include="src\Elysium\Layers\LayerStack.cpp" />
     <ClCompile Include="src\Elysium\Log.cpp" />
     <ClCompile Include="src\Platform\Linux\WaylandWindow.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp" />
     <ClCompile Include="src\Platform\Windows\Win32Window.cpp" />
     <ClCompile Include="src\Platform\Windows\Win32_Input.cpp" />
   </ItemGroup>
@@ -123,6 +124,7 @@
     <ClInclude Include="src\Elysium\Layers\LayerStack.h" />
     <ClInclude Include="src\Elysium\Log.h" />
     <ClInclude Include="src\Platform\Linux\WaylandWindow.h" />
+    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
     <ClInclude Include="src\Platform\Windows\Win32Window.h" />
     <ClInclude Include="src\Elysium\Window.h" />
     <ClInclude Include="src\Platform\Windows\Win32_Input.h" />

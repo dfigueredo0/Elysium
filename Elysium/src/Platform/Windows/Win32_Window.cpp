@@ -126,6 +126,12 @@ namespace Elysium {
 		}
 	}
 
+	void Win32_Window::KeyCharCallback(GLFWwindow* window, unsigned int keycode) {
+		auto& data = *(WindowData*)glfwGetWindowUserPointer(window);
+		KeyTypedEvent event(keycode);
+		data.EventCallback(event);
+	}
+
 	void Win32_Window::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 	{
 		auto& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -168,6 +174,7 @@ namespace Elysium {
 		glfwSetWindowSizeCallback(m_Window, WindowResizeCallback);
 		glfwSetWindowCloseCallback(m_Window, WindowCloseCallback);
 		glfwSetKeyCallback(m_Window, KeyCallback);
+		glfwSetCharCallback(m_Window, KeyCharCallback);
 		glfwSetMouseButtonCallback(m_Window, MouseButtonCallback);
 		glfwSetScrollCallback(m_Window, ScrollCallback);
 		glfwSetCursorPosCallback(m_Window, CursorPosCallback);

@@ -23,6 +23,16 @@ namespace Elysium {
 	private:
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
+
+		static void WindowResizeCallback(GLFWwindow*, int, int);
+		static void WindowCloseCallback(GLFWwindow*);
+		static void KeyCallback(GLFWwindow*, int, int, int, int);
+		static void KeyCharCallback(GLFWwindow*, unsigned int);
+		static void MouseButtonCallback(GLFWwindow*, int, int, int);
+		static void ScrollCallback(GLFWwindow*, double, double);
+		static void CursorPosCallback(GLFWwindow*, double, double);
+
+		void RegisterCallbacks();
 	private:
 		GLFWwindow* m_Window;
 
@@ -34,14 +44,5 @@ namespace Elysium {
 		};
 
 		WindowData m_Data;
-
-		static void WindowResizeCallback(GLFWwindow*, int, int);
-		static void WindowCloseCallback(GLFWwindow*);
-		static void KeyCallback(GLFWwindow*, int, int, int, int);
-		static void MouseButtonCallback(GLFWwindow*, int, int, int);
-		static void ScrollCallback(GLFWwindow*, double, double);
-		static void CursorPosCallback(GLFWwindow*, double, double);
-
-		void RegisterCallbacks();
 	};
 }

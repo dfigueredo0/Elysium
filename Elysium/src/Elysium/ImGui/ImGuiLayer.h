@@ -6,9 +6,8 @@
 #include "Elysium/Events/MouseEvent.h"
 #include "Elysium/Events/KeyEvent.h"
 
-/* TODO: Maybe create my own UI Library */
 namespace Elysium {
-	class ImGuiLayer : public Layer {
+	class ELYSIUM_API ImGuiLayer : public Layer {
 	public:
 		ImGuiLayer();
 		~ImGuiLayer();
@@ -18,14 +17,14 @@ namespace Elysium {
 		void OnUpdate();
 		void OnEvent(Event& e);
 	private:
-		void OnMouseButtonPressedEvent(MouseButtonPressedEvent& e);
-		void OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
-		void OnMouseMovedEvent(MouseMovedEvent& e);
-		void OnMouseScrolledEvent(MouseScrolledEvent& e);
-		void OnKeyPressedEvent(KeyPressedEvent& e);
-		void OnKeyReleasedEvent(KeyReleasedEvent& e);
-		//void OnKeyTypedEvent(KeyTypedEvent& e);
-		void OnWindowResizedEvent(WindowResizeEvent& e);
+		bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& e);
+		bool OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
+		bool OnMouseMovedEvent(MouseMovedEvent& e);
+		bool OnMouseScrolledEvent(MouseScrolledEvent& e);
+		bool OnKeyPressedEvent(KeyPressedEvent& e);
+		bool OnKeyReleasedEvent(KeyReleasedEvent& e);
+		bool OnKeyTypedEvent(KeyTypedEvent& e);
+		bool OnWindowResizedEvent(WindowResizeEvent& e);
 	private:
 		float m_Time = 0.0f;
 	};

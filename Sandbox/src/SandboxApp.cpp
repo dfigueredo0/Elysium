@@ -7,7 +7,7 @@ public:
 	}
 
 	void OnUpdate() override {
-		ELY_INFO("Layer::Update");
+		ELY_INFO("ExampleLayer::Update");
 	}
 
 	void OnEvent(Elysium::Event& e) override {
@@ -19,6 +19,7 @@ class Sandbox : public Elysium::Application {
 public:
 	Sandbox() {
 		PushLayer(new ExampleLayer());
+		PushOverlay(new Elysium::ImGuiLayer());
 	}
 	~Sandbox() {
 	}

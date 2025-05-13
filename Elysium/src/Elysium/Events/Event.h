@@ -5,11 +5,17 @@
 #include "Elysium/Core.h"
 
 namespace Elysium {
+	/*
+	* Currently Events are blocking; immeditaley gets dispatched, 
+	* for the future buffer events through a bus and process 
+	* them during the "event" part of the update stage
+	*/
+
 	enum class EventType {
 		None = 0,
 		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
 		AppTick, AppUpdate, AppRender,
-		KeyPressed, KeyReleased,
+		KeyPressed, KeyReleased, KeyTyped,
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
 
