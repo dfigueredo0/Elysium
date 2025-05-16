@@ -1,7 +1,7 @@
 # Elysium CMakeLists.txt
 
-file(GLOB_RECURSE ELYSIUM_SRC CONFIGURE_DEPENDS "src/Elysium/*.cpp" "src/*.cpp")
-file(GLOB_RECURSE ELYSIUM_HEADERS CONFIGURE_DEPENDS "src/Elysium/*.h" "src/*.h")
+file(GLOB_RECURSE ELYSIUM_SRC CONFIGURE_DEPENDS "src/**/*.cpp")
+file(GLOB_RECURSE ELYSIUM_HEADERS CONFIGURE_DEPENDS "src/**/*.h" "src/**/*.hpp")
 
 set(ALL_ELYSIUM_FILES ${ELYSIUM_SRC} ${ELYSIUM_HEADERS})
 
@@ -16,6 +16,11 @@ target_link_libraries(ElysiumLib
 )
 
 set_target_properties(ImGui PROPERTIES FOLDER "Dependencies")
+
+# Ensure AVX instructions are enabled for MSVC
+if (MSVC)
+    target_compile_options(ElysiumLib PRIVATE /arch:AVX)
+endif()
 
 # Include directories
 target_include_directories(ElysiumLib PUBLIC

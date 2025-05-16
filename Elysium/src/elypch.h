@@ -14,6 +14,6 @@
 
 #include "Elysium/Log.h"
 
-#ifdef ELY_PLATFORM_WINDOWS
+#ifdef _WIN32
 	#include <Windows.h>
 #endif
