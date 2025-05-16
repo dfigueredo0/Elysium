@@ -59,6 +59,30 @@ namespace Math {
 	INLINE ELYSIUM_API double arctan(double x) {
 
 	}
+
+	INLINE ELYSIUM_API float csc(float x) {
+	
+	}
+
+	INLINE ELYSIUM_API double csc(double x) {
+	
+	}
+
+	INLINE ELYSIUM_API float sec(float x) {
+	
+	}
+
+	INLINE ELYSIUM_API double sec(double x) {
+	
+	}
+
+	INLINE ELYSIUM_API float cot(float x) {
+	
+	}
+
+	INLINE ELYSIUM_API double cot(double x) {
+	
+	}
 #pragma endregion
 
 	INLINE ELYSIUM_API float fsqrt(float x) {
@@ -66,6 +90,10 @@ namespace Math {
 	}
 
 	INLINE ELYSIUM_API double sqrt(double x) {
+
+	}
+
+	INLINE ELYSIUM_API float pow(float x, int exponent) {
 
 	}
 
@@ -78,6 +106,9 @@ namespace Math {
 	}
 
 #pragma region Bitwise Utils
+	/**
+	*	@brief Returns true if the value is a power of 2 using bits. 
+	*/
 	INLINE char power2(u64 x) {
 		return (x != 0) && ((x & (x - 1)) == 0);
 	}

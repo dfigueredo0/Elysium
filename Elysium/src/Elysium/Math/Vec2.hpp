@@ -30,7 +30,7 @@ namespace Math {
     *   @param y The 2nd element's value
     *   @return A new 2-element vector.
     */
-    INLINE vec2 createVec2(float x, float y) {
+    INLINE vec2 vec2Create(float x, float y) {
         return vec2(x, y);
     }
 
@@ -59,8 +59,8 @@ namespace Math {
         );
     }
 
-    INLINE float vec2Dot(vec2 a, vec2 b) {
-        return a.x * b.x + a.y * b.y;
+    INLINE float vec2Dot(vec2 u, vec2 v) {
+        return u.x * v.x + u.y * v.y;
     }
 
     INLINE float vec2SquaredLength(vec2 vector) {
@@ -91,7 +91,7 @@ namespace Math {
     *   @return True if within epsilon; otherwise false.
     */
     INLINE char vec2Compare(vec2 u, vec2 v, float epsilon) {
-        return (fabs(u.x - v.x) <= epsilon) && (fabs(u.y - v.y));
+        return (fabs(u.x - v.x) <= epsilon) && (fabs(u.y - v.y) <= epsilon);
     }
 
     INLINE float vec2Distance(vec2 u, vec2 v) {
