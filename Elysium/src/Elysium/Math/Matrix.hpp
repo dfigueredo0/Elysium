@@ -3,7 +3,6 @@
 #include "Elysium/Core.h"
 #include "Vec4.hpp"
 #include <string.h>
-#include <cstddef>
 
 namespace Math {
     template<typename T, int R, int C>
@@ -77,20 +76,98 @@ namespace Math {
 
         }
 
-        Matrix<T, R, C> getCof() {
+        template<typename T, int R, int C>
+        Matrix<T, R - 1, C - 1> getCofactor(const Matrix<T, R, C>& mat, int skipRow, int skipCol) {
+            Matrix<T, R - 1, C - 1> result;
+            int r = 0;
 
+            for (int i = 0; i < R; ++i) {
+                if (i == skipRow) continue;
+                int c = 0;
+                for (int j = 0; j < C; ++j) {
+                    if (j == skipCol) continue;
+                    result(r, c++) = mat(i, j);
+                }
+                ++r;
+            }
+
+            return result;
         }
 
-        Matrix <T, R, C> getDet() {
+        template<typename T, int N>
+        T getDeterminant(const Matrix<T, N, N>& mat) {
+            if constexpr (N == 1) {
+                return mat(0, 0);
+            }
 
+            if constexpr (N == 2) {
+                return mat(0, 0) * mat(1, 1) - mat(0, 1) * mat(1, 0);
+            }
+
+            T result = 0;
+            int sign = 1;
+
+            for (int col = 0; col < N; ++col) {
+                auto cof = getCofactor(mat, 0, col);
+                result += sign * mat(0, col) * getDeterminant(cof);
+                sign *= -1;
+            }
+
+            return result;
         }
 
-        Matrix<T, R, C> inverse() const {
-            ELY_ASSERT(R == C, "Only square matrices can be inversed.");
+        template<typename T, int N>
+        Matrix<T, N, N> getAdjoint(const Matrix<T, N, N>& mat) {
+            Matrix<T, N, N> adj;
 
+            for (int i = 0; i < N; ++i) {
+                for (int j = 0; j < N; ++j) {
+                    auto cof = getCofactor(mat, i, j);
+                    float sign = ((i + j) % 2 == 0) ? 1.0f : -1.0f;
+                    adj(j, i) = sign * getDeterminant(cof);
+                }
+            }
 
+            return adj;
         }
 
+        template<typename T, int N>
+        Matrix<T, N, N> getInverse(const Matrix<T, N, N>& mat) {
+            T det = getDeterminant(mat);
+            ELY_ASSERT(fabs(det) > EPSILON, "Matrix is singular or nearly singular.");
+
+            Matrix<T, N, N> adj = getAdjoint(mat);
+            Matrix<T, N, N> inv;
+
+            for (int i = 0; i < N; ++i)
+                for (int j = 0; j < N; ++j)
+                    inv(i, j) = adj(i, j) / det;
+
+            return inv;
+        }
+
+#pragma region TODO
+        // TODO: make generic
+        INLINE mat4 mat4Translation(vec3 pos) {
+            mat4 mat = mat4::identity();
+            mat.data[12] = pos.x;
+            mat.data[13] = pos.y;
+            mat.data[14] = pos.z;
+            return mat;
+        }
+
+        INLINE mat4 mat4Scale(vec3 scale) {
+            mat4 mat = mat4::identity();
+            mat.data[0] = scale.x;
+            mat.data[5] = scale.y;
+            mat.data[10] = scale.z;
+            return mat;
+        }
+
+        INLINE mat4 mat4Euler(float xRad, float yRad, float zRad) {
+
+        }
+#pragma endregion
 
         INLINE vec4 getRow(int i) const {
             vec4 result;
