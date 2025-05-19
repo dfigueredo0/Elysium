@@ -1,7 +1,7 @@
 # Elysium CMakeLists.txt
 
 file(GLOB_RECURSE ELYSIUM_SRC CONFIGURE_DEPENDS "src/**/*.cpp")
-file(GLOB_RECURSE ELYSIUM_HEADERS CONFIGURE_DEPENDS "src/**/*.h" "src/**/*.hpp")
+file(GLOB_RECURSE ELYSIUM_HEADERS CONFIGURE_DEPENDS "src/**/*.h" "src/**/*.hpp" "src/**/*.inl" "src/**/*.ipp")
 
 set(ALL_ELYSIUM_FILES ${ELYSIUM_SRC} ${ELYSIUM_HEADERS})
 
