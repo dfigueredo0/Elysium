@@ -2,17 +2,31 @@
 
 #include "Elysium/Core.h"
 #include "Matrix.hpp"
-#include "Vec4.hpp"
+#include "Vec.hpp"
 
 namespace Math {
-	typedef vec4 quat;
+	template<typename T>
+	struct alignas(16) quat {
+		union {
+			struct { T x, y, z, w; };
+			T elements[4];
+			vec<T, 4> vec;
+		};
+
+		quat() : x(0), y(0), z(0), w(1) {}
+		quat(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {
+			elements[0] = x; elements[1] = y; elements[2] = z; elements[3] = w;
+		}
+	};
 	
-	INLINE quat quatIdentity() {
-		return quat(0, 0, 0, 1.0f);
+	template<typename T>
+	INLINE quat<T> quatIdentity() {
+		return quat(static_cast<T>0, static_cast<T>0, static_cast<T>0, static_cast<T>1);
 	}
 
-	INLINE float quatNormal(quat q) {
-		return fsqrt(
+	template<typename T>
+	INLINE T quatNormal(quat<T> q) {
+		return sqrt(
 			q.x * q.x +
 			q.y * q.y +
 			q.z * q.z +
@@ -20,21 +34,26 @@ namespace Math {
 		);
 	}
 
-	INLINE quat quatNormalize(quat q) {
-		float norm = (quatNormal(q) <= 0) ? quatNormal(q) : 0.0f;
-		return quat(q.x / norm, q.y / norm, q.z / norm, q.w / norm);
+	template<typename T>
+	INLINE quat<T> quatNormalize(quat<T> q) {
+		T norm = quatNormal(q);
+		if (norm <= EPSILON) return quat<T>(); // or identity
+		return quat<T>(q.x / norm, q.y / norm, q.z / norm, q.w / norm);
 	}
 
-	INLINE quat quatConjugate(quat q) {
+	template<typename T>
+	INLINE quat<T> quatConjugate(quat<T> q) {
 		return quat(-q.x, -q.y, -q.z, q.w);
 	}
 
-	INLINE quat quatInverse(quat q) {
+	template<typename T>
+	INLINE quat<T> quatInverse(quat<T> q) {
 		return quatNormalize(quatConjugate(q));
 	}
 
-	INLINE quat quatMul(quat q, quat r) {
-		quat t;
+	template<typename T>
+	INLINE quat<T> quatMul(quat<T> q, quat<T> r) {
+		quat<T> t;
 
 		t.x = r.w * q.x + r.x * q.w - r.y * q.z + r.z * q.y;
 		t.y = r.w * q.y + r.x * q.z + r.y * q.w - r.z * q.x;
@@ -44,18 +63,20 @@ namespace Math {
 		return t;
 	}
 
-	INLINE float quatDot(quat q, quat r) {
+	template<typename T>
+	INLINE T quatDot(quat<T> q, quat<T> r) {
 		return q.x * r.x + q.y * r.y + q.z * r.z + q.w * r.w;
 	}
 
-	INLINE mat4 quatToMat4(quat q) {
-		mat4 mat = mat4::identity();
-		quat n = quatNormalize(q);
+	template<typename T>
+	INLINE Matrix<T, 4, 4> quatToMat4(quat<T> q) {
+		Matrix<T, 4, 4> mat = Matrix<T, 4, 4>::identity();
+		quat<T> n = quatNormalize(q);
 
-		float x = n.x, y = n.y, z = n.z, w = n.w;
-		float xx = x * x, yy = y * y, zz = z * z;
-		float xy = x * y, xz = x * z, yz = y * z;
-		float wx = w * x, wy = w * y, wz = w * z;
+		T x = n.x, y = n.y, z = n.z, w = n.w;
+		T xx = x * x, yy = y * y, zz = z * z;
+		T xy = x * y, xz = x * z, yz = y * z;
+		T wx = w * x, wy = w * y, wz = w * z;
 
 
 		mat.data[0] = 1.0f - 2.0f * (yy + zz);
@@ -73,13 +94,14 @@ namespace Math {
 		return mat;
 	}
 
-	INLINE mat4 quatToRotMatrix(quat q, vec3 center) {
+	template<typename T>
+	INLINE Matrix<T, 4, 4> quatToRotMatrix(quat<T> q, vec3<T> center) {
 		q = quatNormalize(q);
 
-		float x = q.x, y = q.y, z = q.z, w = q.w;
-		float xx = x * x, yy = y * y, zz = z * z;
-		float xy = x * y, xz = x * z, yz = y * z;
-		float wx = w * x, wy = w * y, wz = w * z;
+		T x = q.x, y = q.y, z = q.z, w = q.w;
+		T xx = x * x, yy = y * y, zz = z * z;
+		T xy = x * y, xz = x * z, yz = y * z;
+		T wx = w * x, wy = w * y, wz = w * z;
 
 		mat4 mat = mat4::identity();
 
@@ -99,9 +121,9 @@ namespace Math {
 		mat(2, 3) = 0.0f;
 
 		// Compute translation so that the rotation is centered around `center`
-		float tx = center.x - (mat(0, 0) * center.x + mat(0, 1) * center.y + mat(0, 2) * center.z);
-		float ty = center.y - (mat(1, 0) * center.x + mat(1, 1) * center.y + mat(1, 2) * center.z);
-		float tz = center.z - (mat(2, 0) * center.x + mat(2, 1) * center.y + mat(2, 2) * center.z);
+		T tx = center.x - (mat(0, 0) * center.x + mat(0, 1) * center.y + mat(0, 2) * center.z);
+		T ty = center.y - (mat(1, 0) * center.x + mat(1, 1) * center.y + mat(1, 2) * center.z);
+		T tz = center.z - (mat(2, 0) * center.x + mat(2, 1) * center.y + mat(2, 2) * center.z);
 
 		mat(3, 0) = tx;
 		mat(3, 1) = ty;
@@ -111,13 +133,14 @@ namespace Math {
 		return mat;
 	}
 
-	INLINE quat quatFromAxisAngle(vec3 axis, float angle, char normalize) {
-		const float half_angle = 0.5f * angle;
+	template<typename T>
+	INLINE quat<T> quatFromAxisAngle(vec3<T> axis, T angle, char normalize) {
+		const T half_angle = 0.5f * angle;
 
-		float s = sin(half_angle);
-		float c = cos(half_angle);
+		T s = sin(half_angle);
+		T c = cos(half_angle);
 
-		quat q = quat(s * axis.x, s * axis.y, s * axis.z, c);
+		quat<T> q = quat(s * axis.x, s * axis.y, s * axis.z, c);
 
 		if (normalize) {
 			return quatNormalize(q);
@@ -132,11 +155,12 @@ namespace Math {
 	*	@param r Ending quaternion value
 	*	@param t Interpolation ratio. Value range is [0, 1].
 	*/
-	INLINE quat quatSlerp(quat q, quat r, float t) {
+	template<typename T>
+	INLINE quat<T> quatSlerp(quat<T> q, quat<T> r, T t) {
 		q = quatNormalize(q);
 		r = quatNormalize(r);
-		quat result;
-		float cosHalfTheta = quatDot(q, r);
+		quat<T> result;
+		T cosHalfTheta = quatDot(q, r);
 
 		if (cosHalfTheta < 0.0f) {
 			r.x = -r.x;
@@ -146,7 +170,7 @@ namespace Math {
 			cosHalfTheta = -cosHalfTheta;
 		}
 
-		const float DOT_THRESHOLD = 0.9995f;
+		const T DOT_THRESHOLD = 0.9995f;
 		if (cosHalfTheta > DOT_THRESHOLD) {
 			// Linear interpolation + normalize
 			for (int i = 0; i < 4; ++i)
@@ -155,15 +179,18 @@ namespace Math {
 		}
 
 
-		float theta = acosf(cosHalfTheta);
-		float sinTheta = sinf(theta);
+		T theta = acosf(cosHalfTheta);
+		T sinTheta = sinf(theta);
 
-		float s0 = sinf((1 - t) * theta) / sinTheta;
-		float s1 = sinf(t * theta) / sinTheta;
+		T s0 = sinf((1 - t) * theta) / sinTheta;
+		T s1 = sinf(t * theta) / sinTheta;
 
 		for (int i = 0; i < 4; ++i)
 			result.elements[i] = q.elements[i] * s0 + r.elements[i] * s1;
 
 		return quatNormalize(result);
 	}
+
+	using quatf = quat<float>;
+	using quatd = quat<double>;
 }
