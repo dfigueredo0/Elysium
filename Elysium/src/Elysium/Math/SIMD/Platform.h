@@ -31,27 +31,3 @@
 #else
 #include <cmath>  // Scalar fallback
 #endif
-
-/*
-* #if GLM_ARCH & GLM_ARCH_AVX2_BIT
-#	include <immintrin.h>
-#elif GLM_ARCH & GLM_ARCH_AVX_BIT
-#	include <immintrin.h>
-#elif GLM_ARCH & GLM_ARCH_SSE42_BIT
-#	if GLM_COMPILER & GLM_COMPILER_CLANG
-#		include <popcntintrin.h>
-#	endif
-#	include <nmmintrin.h>
-#elif GLM_ARCH & GLM_ARCH_SSE41_BIT
-#	include <smmintrin.h>
-#elif GLM_ARCH & GLM_ARCH_SSSE3_BIT
-#	include <tmmintrin.h>
-#elif GLM_ARCH & GLM_ARCH_SSE3_BIT
-#	include <pmmintrin.h>
-#elif GLM_ARCH & GLM_ARCH_SSE2_BIT
-#	include <emmintrin.h>
-#elif GLM_ARCH & GLM_ARCH_NEON_BIT
-#	include "neon.h"
-#endif//GLM_ARCH
-
-*/
