@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Elysium/Core.h"
+#include "Functions.hpp"
 #include "Matrix.hpp"
 #include "Vec.hpp"
 
@@ -13,7 +14,7 @@ namespace Math {
 			vec<T, 4> vec;
 		};
 
-		quat() : x(0), y(0), z(0), w(1) {}
+		constexpr quat() : x(0), y(0), z(0), w(1) {}
 		quat(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {
 			elements[0] = x; elements[1] = y; elements[2] = z; elements[3] = w;
 		}
@@ -21,12 +22,12 @@ namespace Math {
 	
 	template<typename T>
 	INLINE quat<T> quatIdentity() {
-		return quat(static_cast<T>0, static_cast<T>0, static_cast<T>0, static_cast<T>1);
+		return quat(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1));
 	}
 
 	template<typename T>
 	INLINE T quatNormal(quat<T> q) {
-		return sqrt(
+		return Math::sqrt(
 			q.x * q.x +
 			q.y * q.y +
 			q.z * q.z +
@@ -95,7 +96,7 @@ namespace Math {
 	}
 
 	template<typename T>
-	INLINE Matrix<T, 4, 4> quatToRotMatrix(quat<T> q, vec3<T> center) {
+	INLINE Matrix<T, 4, 4> quatToRotMatrix(quat<T> q, vec<T, 3> center) {
 		q = quatNormalize(q);
 
 		T x = q.x, y = q.y, z = q.z, w = q.w;
@@ -103,7 +104,7 @@ namespace Math {
 		T xy = x * y, xz = x * z, yz = y * z;
 		T wx = w * x, wy = w * y, wz = w * z;
 
-		mat4 mat = mat4::identity();
+		Matrix<T, 4, 4> mat = Matrix<T, 4, 4>::identity();
 
 		mat(0, 0) = 1.0f - 2.0f * (yy + zz);
 		mat(0, 1) = 2.0f * (xy - wz);
@@ -134,7 +135,7 @@ namespace Math {
 	}
 
 	template<typename T>
-	INLINE quat<T> quatFromAxisAngle(vec3<T> axis, T angle, char normalize) {
+	INLINE quat<T> quatFromAxisAngle(vec<T, 3> axis, T angle, bool normalize) {
 		const T half_angle = 0.5f * angle;
 
 		T s = sin(half_angle);
@@ -179,11 +180,11 @@ namespace Math {
 		}
 
 
-		T theta = acosf(cosHalfTheta);
-		T sinTheta = sinf(theta);
+		T theta = Math::acos(cosHalfTheta);
+		T sinTheta = Math::sin(theta);
 
-		T s0 = sinf((1 - t) * theta) / sinTheta;
-		T s1 = sinf(t * theta) / sinTheta;
+		T s0 = Math::sin((1 - t) * theta) / sinTheta;
+		T s1 = Math::sin(t * theta) / sinTheta;
 
 		for (int i = 0; i < 4; ++i)
 			result.elements[i] = q.elements[i] * s0 + r.elements[i] * s1;

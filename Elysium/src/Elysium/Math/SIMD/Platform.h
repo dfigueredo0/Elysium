@@ -1,5 +1,15 @@
 #pragma once
 
+#if defined(_MSVC_LANG)  // MS compiler has its own version of __cplusplus with different value
+#if _MSVC_LANG < 201703
+#error Please compile for C++17 or higher
+#endif
+#else  // all other compilers
+#if __cplusplus < 201703
+#error Please compile for C++17 or higher
+#endif
+#endif
+
 #if defined(__AVX512F__)
 #define SIMD_LEVEL_AVX512 1
 #elif defined(__AVX2__)
@@ -12,6 +22,15 @@
 #define SIMD_LEVEL_SCALAR 1
 #endif
 
+#if SIMD_LEVEL_AVX512 || SIMD_LEVEL_AVX2 || SIMD_LEVEL_AVX
+#include <immintrin.h>
+#include <xmmintrin.h>
+#elif SIMD_LEVEL_SSE41
+#include <smmintrin.h>
+#include <xmmintrin.h>
+#else
+#include <cmath>  // Scalar fallback
+#endif
 
 /*
 * #if GLM_ARCH & GLM_ARCH_AVX2_BIT
@@ -34,35 +53,5 @@
 #elif GLM_ARCH & GLM_ARCH_NEON_BIT
 #	include "neon.h"
 #endif//GLM_ARCH
-
-#if GLM_ARCH & GLM_ARCH_SSE2_BIT
-	typedef __m128			glm_f32vec4;
-	typedef __m128i			glm_i32vec4;
-	typedef __m128i			glm_u32vec4;
-	typedef __m128d			glm_f64vec2;
-	typedef __m128i			glm_i64vec2;
-	typedef __m128i			glm_u64vec2;
-
-	typedef glm_f32vec4		glm_vec4;
-	typedef glm_i32vec4		glm_ivec4;
-	typedef glm_u32vec4		glm_uvec4;
-	typedef glm_f64vec2		glm_dvec2;
-#endif
-
-#if GLM_ARCH & GLM_ARCH_AVX_BIT
-	typedef __m256d			glm_f64vec4;
-	typedef glm_f64vec4		glm_dvec4;
-#endif
-
-#if GLM_ARCH & GLM_ARCH_AVX2_BIT
-	typedef __m256i			glm_i64vec4;
-	typedef __m256i			glm_u64vec4;
-#endif
-
-#if GLM_ARCH & GLM_ARCH_NEON_BIT
-	typedef float32x4_t			glm_f32vec4;
-	typedef int32x4_t			glm_i32vec4;
-	typedef uint32x4_t			glm_u32vec4;
-#endif
 
 */

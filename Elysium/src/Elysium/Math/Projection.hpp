@@ -3,18 +3,19 @@
 #include "Elysium/Core.h"
 #include "Matrix.hpp"
 #include "Functions.hpp"
-#include "Vec3.hpp"
+#include "Vec.hpp"
 
 namespace Math {
 	/** 
 	*   @brief Creates and returns an orthographc projection matrix. Typically used to render flat or 2D scenes.
 	*/
-	INLINE mat4 orthographic(float left, float right, float bottom, float top, float near, float far) {
-		mat4 mat = mat4::identity();
+	template<typename T>
+	INLINE Matrix<T, 4, 4> orthographic(T left, T right, T bottom, T top, T near, T far) {
+		Matrix<T, 4, 4> mat = Matrix<T, 4, 4>::identity();
 
-		float lr = 1.0f / (left - right);
-		float bt = 1.0f / (bottom - top);
-		float nf = 1.0f / (near - far);
+		T lr = 1.0f / (left - right);
+		T bt = 1.0f / (bottom - top);
+		T nf = 1.0f / (near - far);
 
 		mat.data[0] = -2.0f * lr;
 		mat.data[5] = -2.0f * bt;
@@ -35,11 +36,12 @@ namespace Math {
 	*	@param near The near clipping plane distance
 	*	@param far The far clipping plane distance
 	*/
-	INLINE mat4 perspective(float fov, float aspect, float near, float far) {
-		mat4 mat = mat4::identity();
+	template<typename T>
+	INLINE Matrix<T, 4, 4> perspective(T fov, T aspect, T near, T far) {
+		Matrix<T, 4, 4> mat = Matrix<T, 4, 4>::identity();
 
-		mat.data[0] = aspect * (cot(fov / 2));
-		mat.data[5] = cot(fov / 2);
+		mat.data[0] = aspect * (Math::cot(fov / 2));
+		mat.data[5] = Math::cot(fov / 2);
 		mat.data[10] = far / (far - near);
 		mat.data[11] = 1.0f;
 		mat.data[14] = -((2.0f * far * near) / (far - near));
@@ -56,16 +58,17 @@ namespace Math {
 	*	@param up The up vector.
 	*	@return a matrix looking at the target from the perspective of their position.
 	*/
-	INLINE mat4 lookAt(const vec3& pos, const vec3& target, const vec3& up) {
-		mat4 mat;
-		vec3 forward = vec3Normalized(vec3Sub(target, pos));
-		vec3 right = vec3Normalized(vec3Cross(forward, up));
-		vec3 u = vec3Cross(right, forward);
+	template<typename T>
+	INLINE Matrix<T, 4, 4> lookAt(const vec<T, 3>& pos, const vec<T, 3>& target, const vec<T, 3>& up) {
+		Matrix<T, 4, 4> mat;
+		vec<T, 3> forward = Math::vec3Normalized((target - pos));
+		vec<T, 3> right = Math::vec3Normalized(vec3Cross(forward, up));
+		vec<T, 3> u = Math::vec3Cross(right, forward);
 
-		mat.setRow(0, vec4(right.x, right.y, right.z, -vec3Dot(right, pos)));
-		mat.setRow(1, vec4(u.x, u.y, u.z, -vec3Dot(u, pos)));
-		mat.setRow(2, vec4(-forward.x, -forward.y, -forward.z, vec3Dot(forward, pos)));
-		mat.setRow(3, vec4(0.0f, 0.0f, 0.0f, 1.0f));
+		mat.setRow(0, vec<T, 4>(right.x, right.y, right.z, -Math::vec3Dot(right, pos)));
+		mat.setRow(1, vec<T, 3>(u.x, u.y, u.z, -vec3Dot(u, pos)));
+		mat.setRow(2, vec<T, 4>(-forward.x, -forward.y, -forward.z, vec3Dot(forward, pos)));
+		mat.setRow(3, vec<T, 4>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1)));
 
 		return mat;
 	}

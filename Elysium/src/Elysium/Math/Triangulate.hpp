@@ -1,9 +1,6 @@
 #pragma once
 
 /*
-* 
-* 
-* 
 * High lvl overview
 * typedef struct { float x, y } vec2;
 * 
@@ -55,3 +52,23 @@
 * 
 * TODO: Interpolate using alpah * v0 + beta * v1 + gamma * v2
 */
+
+#include "Elysium/Core.h"
+#include "Vec.hpp"
+
+namespace Math {
+	template<typename T>
+	struct Triangle { 
+		vec<T, 2> v0, v1, v2; 
+	};
+
+	template<typename T>
+	bool isPointInTriangle(const vec<T, 2>& pt, const Triangle<T>& tri) {
+
+	}
+
+	template<typename T>
+	vec<T, 3> computeBarycentricCoords(const vec<T, 2>& p, const Triangle<T>& tri) {
+
+	}
+}

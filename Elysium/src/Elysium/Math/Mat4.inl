@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Matrix.hpp"
+#include "Vec.hpp"
 
 namespace Math {
    // Tait-Bryan Angles -- intersection of two non-homologous planes -- most common convention Z(a)X(b)Y(c)
@@ -82,6 +83,25 @@ namespace Math {
         vec<T, 3> right{ mat.data[0], mat.data[4], mat.data[8] };
         vec3Normalize(&right);
         return right;
+    }
+
+    template<typename T>
+    INLINE vec<T, 3> Mat4MulVec3(Matrix<T, 4, 4> m, vec<T, 3> v) {
+        return vec<T, 3>(
+            v.x * m.data[0] + v.y * m.data[1] + v.z * m.data[2] + m.data[3],
+            v.x * m.data[4] + v.y * m.data[5] + v.z * m.data[6] + m.data[7],
+            v.x * m.data[8] + v.y * m.data[9] + v.z * m.data[10] + m.data[11],
+        );
+    }
+
+    template<typename T>
+    INLINE vec<T, 4> Mat4MulVec4(Matrix<T, 4, 4> m, vec<T, 4> v) {
+        return vec<T, 4>(
+            v.x * m.data[0] + v.y * m.data[1] + v.z * m.data[2] + v.w * m.data[3],
+            v.x * m.data[4] + v.y * m.data[5] + v.z * m.data[6] + v.w * m.data[7],
+            v.x * m.data[8] + v.y * m.data[9] + v.z * m.data[10] + v.w * m.data[11],
+            v.x * m.data[12] + v.y * m.data[13] + v.z * m.data[14] + v.w * m.data[15]
+        );
     }
 
     using mat4 = Matrix<float, 4, 4>;

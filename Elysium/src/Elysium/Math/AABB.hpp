@@ -30,3 +30,32 @@
 *	return FindMinSeparation(a, b) <= 0 && FindMinSeparation(b, a) <= 0;
 * } 
 */
+
+namespace Math {
+	template<typename T>
+	struct AABB {
+		vec<T, 3> min;
+		vec<T, 3> max;
+
+		bool intersects(const AABB<T>& other) const {
+
+		}
+
+		bool containsPoint(const vec<T, 3>& point) const {
+
+		}
+
+		vec<T, 3> center() const {
+
+		}
+
+		vec<T, 3> size() const {
+
+		}
+	};
+
+	template<typename T>
+	bool GJKIntersect(const AABB<T>& a, const AABB<T>& b) { // placeholder
+		
+	}
+}

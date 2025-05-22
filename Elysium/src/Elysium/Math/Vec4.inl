@@ -25,6 +25,16 @@ namespace Math {
 	INLINE vec<T, 4> vec4Zero() { return vec<T, 4>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0)); }
 
 	template<typename T>
+	INLINE vec<T, 4> vec4MulMat4(Matrix<T, 4, 4> m, vec<T, 4> v) {
+		return vec<T, 4>(
+			v.x * m.data[0] + v.y * m.data[4] + v.z * m.data[8] + v.w * m.data[12],
+			v.x * m.data[1] + v.y * m.data[5] + v.z * m.data[9] + v.w * m.data[13],
+			v.x * m.data[2] + v.y * m.data[6] + v.z * m.data[10] + v.w * m.data[14],
+			v.x * m.data[3] + v.y * m.data[7] + v.z * m.data[11] + v.w * m.data[15]
+		);
+	}
+
+	template<typename T>
 	INLINE T vec4Dot(vec<T, 4> u, vec<T, 4> v) {
 		T result = 0;
 		for (int i = 0; i < 4; ++i) {

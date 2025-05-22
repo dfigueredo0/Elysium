@@ -55,7 +55,7 @@ namespace Math {
     }
 
     template<typename T>
-    INLINE Matrix<T, 3, 3> mat3Translation(const vec<T, 3>& pos) {
+    INLINE Matrix<T, 3, 3> mat3Translation(const vec<T, 2>& pos) {
         Matrix<T, 3, 3> mat = Matrix<T, 3, 3>::identity();
         mat.data[2] = pos.x;
         mat.data[5] = pos.y;
@@ -72,7 +72,7 @@ namespace Math {
     }
 
     template<typename T>
-    INLINE Matrix<T, 3, 3> mat3Scale(const vec<T, 3>& scale) {
+    INLINE Matrix<T, 3, 3> mat3Scale(const vec<T, 2>& scale) {
         Matrix<T, 3, 3> mat = Matrix<T, 3, 3>::identity();
         mat.data[0] = scale.x;
         mat.data[4] = scale.y;

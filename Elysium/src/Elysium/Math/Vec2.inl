@@ -22,6 +22,9 @@ namespace Math {
     INLINE vec<T, 2> vec2Zero() { return vec<T, 2>(static_cast<T>(0), static_cast<T>(0)); }
 
     template<typename T>
+    INLINE vec<T, 2> vec2Zero() { return vec<T, 2>(static_cast<T>(1), static_cast<T>(1)); }
+
+    template<typename T>
     INLINE vec<T, 2> vec2Up() { return vec2(static_cast<T>(0), static_cast<T>(1)); }
 
     template<typename T>

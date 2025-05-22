@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Elysium/Core.h"
+#include "Constants.h"
 
 namespace Math {
 	/*
-	*	TODO: Math utils to add Clamp, Saturate, Min, Max
+	*	TODO: Math utils to add Clamp, Saturate
 	*		Noise (perlin, simplex, value noise generations)
 	*		Color (lerp between colors, HSV conversion)
 	*		deterministic psuedo-random hashes
@@ -256,6 +257,22 @@ namespace Math {
 	INLINE ELYSIUM_API double ceil(double x) {
 		double i = (i64)x;
 		return (x < 0.0 && x != i) ? i + 1 : i;
+	}
+
+	INLINE ELYSIUM_API float min(float x, float y) {
+		return x < y ? x : y;
+	}
+
+	INLINE ELYSIUM_API double min(double x, double y) {
+		return x < y ? x : y;
+	}
+
+	INLINE ELYSIUM_API float max(float x, float y) {
+		return x > y ? x : y;
+	}
+
+	INLINE ELYSIUM_API double max(double x, double y) {
+		return x > y ? x : y;
 	}
 
 	/**

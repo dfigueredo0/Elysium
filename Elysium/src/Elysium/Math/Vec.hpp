@@ -67,6 +67,7 @@ namespace Math {
 	};
 
 #if SIMD_LEVEL_AVX512 || SIMD_LEVEL_AVX2 || SIMD_LEVEL_AVX
+	template<>
 	struct alignas(32) vec<double, 4> {
 		union {
 			__m256d data;
@@ -78,6 +79,7 @@ namespace Math {
 		INLINE vec(double x, double y, double z, double w) : data(_mm256_set_pd(w, z, y, x)) {}
 	};
 
+	template<>
 	struct alignas(32) vec<double, 3> {
 		union {
 			__m256d data;
@@ -94,6 +96,7 @@ namespace Math {
 		INLINE vec(double x, double y, double z) : data(_mm256_set_pd(0.0, z, y, x)) {}
 	};
 
+	template<>
 	struct alignas(32) vec<double, 2> {
 		union {
 			__m256d data;
@@ -111,6 +114,7 @@ namespace Math {
 #endif
 
 #if SIMD_LEVEL_SSE41
+	template<>
 	struct alignas(16) vec<float, 4> {
 		union {
 			__m128 data;
@@ -122,6 +126,7 @@ namespace Math {
 		INLINE vec(float x, float y, float z, float w) : data(_mm_set_ps(w, z, y, x)) {}
 	};
 
+	template<>
 	struct alignas(16) vec<float, 3> {
 		union {
 			__m128 data;
@@ -138,6 +143,7 @@ namespace Math {
 		INLINE vec(float x, float y, float z) : data(_mm_set_ps(0.0f, z, y, x)) {}
 	};
 
+	template<>
 	struct alignas(16) vec<float, 2> {
 		union {
 			__m128 data;

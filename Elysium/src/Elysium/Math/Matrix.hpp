@@ -90,14 +90,14 @@ namespace Math {
             return *this;
         }
 
-        static bool operator==(const Matrix<T, R, C>& rhs) {
+        bool operator==(const Matrix<T, R, C>& rhs) const {
             for (int i = 0; i < R * C; ++i)
                 if (this->data[i] != rhs.data[i])
                     return false;
             return true;
         }
 
-        static bool operator!=(const Matrix<T, R, C>& rhs) {
+        bool operator!=(const Matrix<T, R, C>& rhs) const {
             return !(*this == rhs);
         }
 
@@ -211,6 +211,10 @@ namespace Math {
             }
 
             return result;
+        }
+
+        Matrix<T, C, R> transpose() const {
+            return getTransposition(*this);
         }
 
         INLINE vec<T, C> getRow(int i) const {

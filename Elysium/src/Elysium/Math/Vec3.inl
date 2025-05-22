@@ -20,6 +20,9 @@ namespace Math {
 	INLINE vec<T, 3> vec3Zero() { return vec<T, 3>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0)); }
 
     template<typename T>
+    INLINE vec<T, 3> vec3One() { return vec<T, 3>(static_cast<T>(1), static_cast<T>(1), static_cast<T>(1)); }
+
+    template<typename T>
 	INLINE vec<T, 3> vec3Up() { return vec<T, 3>(static_cast<T>(0), static_cast<T>(1), static_cast<T>(0)); }
 
     template<typename T>
@@ -47,7 +50,7 @@ namespace Math {
         return vec3(
             u.y * v.z - u.z * v.y,
             u.z * v.x - u.x * v.z,
-            u.x * v.y - u.y - v.x
+            u.x * v.y - u.y * v.x
         );
     }
 
@@ -73,8 +76,8 @@ namespace Math {
 
     template<typename T>
     INLINE vec<T, 3> vec3Normalized(vec<T, 3> v) {
-        vec3Normalize(&v);
-        return v;
+        vec<T, 3> normalized = vec3Normalize(v);
+        return normalized;
     }
 
     /**
@@ -94,6 +97,26 @@ namespace Math {
     INLINE T vec3Distance(vec<T, 3> u, vec<T, 3> v) {
         return vec3Length(u - v);
     }
+    
+    template<typename T>
+    INLINE vec<T, 3> vec3MulMat3(Matrix<T, 3, 3> m, vec<T, 3> v) {
+        return vec<T, 3>(
+            v.x * m.data[0] + v.y * m.data[4] + v.z * m.data[7],
+            v.x * m.data[1] + v.y * m.data[5] + v.z * m.data[8],
+            v.x * m.data[2] + v.y * m.data[6] + v.z * m.data[9]
+        )
+    }
+
+    template<typename T>
+    INLINE vec<T, 3> vec3MulMat4(Matrix<T, 4, 4> m, vec<T, 3> v) {
+        return vec<T, 3>(
+            v.x * m.data[0] + v.y * m.data[4] + v.z * m.data[8] + m.data[12],
+            v.x * m.data[1] + v.y * m.data[5] + v.z * m.data[9] + m.data[13],
+            v.x * m.data[2] + v.y * m.data[6] + v.z * m.data[10] + m.data[14]
+        );
+    }
+
+
 
     using vec3 = vec<float, 3>;
     using vec3d = vec<double, 3>;
