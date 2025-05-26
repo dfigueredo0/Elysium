@@ -16,14 +16,14 @@ __m256d div_lowp(__m256d a, __m256d b) {
 
 __m128 swizzle_xywz(__m128 a) {
 #if SIMD_LEVEL_AVX2 || SIMD_LEVEL_AVX
-	return _mm_permute_ps(a, _MM_SHUFFLE(3, 2, 1, 0));
+	return _mm_permute_ps(a, 0xE4);
 #else
-	return _mm_shuffle_ps(a, a, _MM_SHUFFLE(3, 2, 1, 0)); // 0b11100100 0xE4
+	return _mm_shuffle_ps(a, a, 0xE4);
 #endif  
 }
 
 __m256d swizzle_xywz(__m256d a) {
-	return _mm256_permute_pd(a, _MM_SHUFFLE(3, 2, 1, 0));
+	return _mm256_permute_pd(a, 0xE4);
 }
 
 __m128 round_even(__m128 a) {
@@ -63,19 +63,27 @@ __m256d mix(__m256d a, __m256d b, __m256d c) {
 }
 
 __m128 step(__m128 e, __m128 x) {
-
+	return _mm_cmpge_ps(x, e);
 }
 
 __m256d step(__m256d e, __m256d x) {
-
+	return _mm256_cmp_pd(x, e, 0x1D);
 }
 
 __m128 smoothStep(__m128 e, __m128 x) {
-
+	__m128 const sub = _mm_sub_ps(x, e);
+	__m128 const div = _mm_div_ps(sub, _mm_sub_ps(_mm_set1_ps(1.0f), e));
+	__m128 const clmp = clamp(div, _mm_setzero_ps(), _mm_set1_ps(1.0f));
+	__m128 const mul = _mm_mul_ps(_mm_set1_ps(2.0f), clmp);
+	return _mm_mul_ps(_mm_mul_ps(clmp, clmp), _mm_sub_ps(_mm_set1_ps(3.0f), mul));
 }
 
 __m256d smoothStep(__m256d e, __m256d x) {
-
+	__m256d const sub = _mm256_sub_pd(x, e);
+	__m256d const div = _mm256_div_pd(sub, _mm256_sub_pd(_mm256_set1_pd(1.0), e));
+	__m256d const clmp = clamp(div, _mm256_setzero_pd(), _mm256_set1_pd(1.0));
+	__m256d const mul = _mm256_mul_pd(_mm256_set1_pd(2.0), clmp);
+	return _mm256_mul_pd(_mm256_mul_pd(clmp, clmp), _mm256_sub_pd(_mm256_set1_pd(3.0), mul));
 }
 
 __m128 nan(__m128 x) {
