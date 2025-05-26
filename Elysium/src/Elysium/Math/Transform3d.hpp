@@ -48,6 +48,16 @@ namespace Math {
 	}
 
 	template<typename T>
+	ELYSIUM_API Transform3D<T> lookAt() {
+
+	}
+
+	template<typename T>
+	ELYSIUM_API quat<T> getForward() {
+
+	}
+
+	template<typename T>
 	ELYSIUM_API Transform3D<T> transformFromPosition(vec<T, 3> position) {
 
 	}
