@@ -39,8 +39,6 @@
 #else
 #define SIMD_LEVEL_SCALAR 1
 #endif
-<<<<<<< Updated upstream
-=======
 
 // Include SIMD headers
 #if SIMD_LEVEL_AVX512 || SIMD_LEVEL_AVX2 || SIMD_LEVEL_AVX
@@ -52,4 +50,3 @@
 #else
 #include <cmath>  // Scalar fallback
 #endif
->>>>>>> Stashed changes
