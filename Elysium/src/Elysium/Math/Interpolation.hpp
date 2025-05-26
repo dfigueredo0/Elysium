@@ -19,11 +19,11 @@ namespace Math {
 
 	}
 
-	INLINE float step() {
+	INLINE float step(float x) {
 
 	}
 
-	INLINE double step() {
+	INLINE double step(double x) {
 
 	}
 
