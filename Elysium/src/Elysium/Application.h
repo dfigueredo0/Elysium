@@ -7,6 +7,8 @@
 #include "Events/ApplicationEvent.h"
 #include "Layers/LayerStack.h"
 
+#include "Elysium/ImGui/ImGuiLayer.h"
+
 namespace Elysium {
 	class ELYSIUM_API Application
 	{
@@ -28,6 +30,7 @@ namespace Elysium {
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 

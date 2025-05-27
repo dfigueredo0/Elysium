@@ -1,4 +1,4 @@
-#include "elypch.h"
+﻿#include "elypch.h"
 #include "Win32_Window.h"
 
 #include "Elysium/Events/ApplicationEvent.h"
@@ -64,6 +64,12 @@ namespace Elysium {
 			glfwSetErrorCallback(ErrorCallback);
 			s_GLFWInitialized = true;
 		}
+
+		glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+		glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
+		glfwWindowHint(GLFW_FOCUS_ON_SHOW, GLFW_TRUE);
+		glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
