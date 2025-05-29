@@ -5,8 +5,7 @@
 
 namespace Math {
 	/*
-	*	TODO: Math utils to add Clamp, Saturate
-	*		Noise (perlin, simplex, value noise generations)
+	*	TODO: Math utils to add Clamp
 	*		Color (lerp between colors, HSV conversion)
 	*		deterministic psuedo-random hashes
 	*		bezier / spline
@@ -16,7 +15,7 @@ namespace Math {
 
 #pragma region Trigonometry
 	template<typename T>
-	INLINE ELYSIUM_API T sin(T x) {
+	INLINE T sin(T x) {
 		using M = MathTraits<T>;
 
 		x = mod(x, M::TWO_PI);
@@ -34,7 +33,7 @@ namespace Math {
 	}
 
 	template<typename T>
-	INLINE ELYSIUM_API T cos(T x) {
+	INLINE T cos(T x) {
 		using M = MathTraits<T>;
 
 		x = mod(x, M::TWO_PI);
@@ -61,7 +60,7 @@ namespace Math {
 	}
 
 	template<typename T>
-	INLINE ELYSIUM_API T atan(T x) {
+	INLINE T atan(T x) {
 		using M = MathTraits<T>;
 
 		T abs_x = abs(x);
@@ -91,7 +90,7 @@ namespace Math {
 	}
 
 	template<typename T>
-	INLINE ELYSIUM_API T tan(T x) {
+	INLINE T tan(T x) {
 		using M = MathTraits<T>;
 
 		T s = sin(x);
@@ -100,7 +99,7 @@ namespace Math {
 	}
 
 	template<typename T>
-	INLINE ELYSIUM_API T asin(T x) {
+	INLINE T asin(T x) {
 		using M = MathTraits<T>;
 
 		if (x < -static_cast<T>(1) || x > static_cast<T>(1))
@@ -109,7 +108,7 @@ namespace Math {
 	}
 
 	template<typename T>
-	INLINE ELYSIUM_API T acos(T x) {
+	INLINE T acos(T x) {
 		using M = MathTraits<T>;
 
 		if (x < -static_cast<T>(1) || x > static_cast<T>(1))
@@ -118,7 +117,7 @@ namespace Math {
 	}
 
 	template<typename T>
-	INLINE ELYSIUM_API T csc(T x) {
+	INLINE T csc(T x) {
 		using M = MathTraits<T>;
 
 		T s = sin(x);
@@ -127,7 +126,7 @@ namespace Math {
 
 
 	template<typename T>
-	INLINE ELYSIUM_API T sec(T x) {
+	INLINE T sec(T x) {
 		using M = MathTraits<T>;
 
 		T c = cos(x);
@@ -135,7 +134,7 @@ namespace Math {
 	}
 
 	template<typename T>
-	INLINE ELYSIUM_API T cot(T x) {
+	INLINE T cot(T x) {
 		using M = MathTraits<T>;
 
 		T t = tan(x);
@@ -143,14 +142,14 @@ namespace Math {
 	}
 
 	template<typename T>
-	INLINE ELYSIUM_API float degToRad(T degrees) {
+	INLINE float degToRad(T degrees) {
 		using M = MathTraits<T>;
 
 		return degrees * M::DEG2RAD;
 	}
 
 	template<typename T>
-	INLINE ELYSIUM_API float radToDeg(T radians) {
+	INLINE float radToDeg(T radians) {
 		using M = MathTraits<T>;
 
 		return radians * M::RAD2DEG;
@@ -158,7 +157,7 @@ namespace Math {
 #pragma endregion
 
 	template<typename T>
-	INLINE ELYSIUM_API float mod(T x, T y) {
+	INLINE float mod(T x, T y) {
 		using M = MathTraits<T>;
 
 		if (y == 0.0)
@@ -169,7 +168,7 @@ namespace Math {
 	}
 
 	template<typename T>
-	INLINE ELYSIUM_API bool isEqualApprox(T x, T y) {
+	INLINE bool isEqualApprox(T x, T y) {
 		using M = MathTraits<T>;
 
 		if (x == y)
@@ -178,13 +177,13 @@ namespace Math {
 	}
 
 	template<typename T>
-	INLINE ELYSIUM_API bool isEqualApprox(T x, T y, T tolerance) {
+	INLINE bool isEqualApprox(T x, T y, T tolerance) {
 		if (x == y)
 			return true;
 		return abs(x - y) < tolerance;
 	}
 
-	INLINE ELYSIUM_API float sqrt(float x) {
+	INLINE float sqrt(float x) {
 		if (x <= 0.0f)
 			return 0.0f;
 
@@ -198,7 +197,7 @@ namespace Math {
 		return x;
 	}
 
-	INLINE ELYSIUM_API double sqrt(double x) {
+	INLINE double sqrt(double x) {
 		if (x <= 0.0)
 			return 0.0;
 
@@ -214,7 +213,7 @@ namespace Math {
 		return x;
 	}
 
-	INLINE ELYSIUM_API float pow(float x, int exp) {
+	INLINE float pow(float x, int exp) {
 		float result = 1.0f;
 		bool neg = (exp < 0);
 		exp = abs(exp);
@@ -227,52 +226,60 @@ namespace Math {
 		return neg ? 1.0f / result : result;
 	}
 
-	INLINE ELYSIUM_API int abs(int x) {
+	INLINE int abs(int x) {
 		return (x < 0) ? -x : x;
 	}
 
-	INLINE ELYSIUM_API float abs(float x) {
+	INLINE float abs(float x) {
 		return (x < 0.0f) ? -x : x;
 	}
 
-	INLINE ELYSIUM_API double abs(double x) {
+	INLINE double abs(double x) {
 		return (x < 0.0) ? -x : x;
 	}
 
-	INLINE ELYSIUM_API float floor(float x) {
+	INLINE float floor(float x) {
 		float i = (i32)x;
 		return (x < 0.0f && x != i) ? i - 1.0f : i;
 	}
 
-	INLINE ELYSIUM_API double floor(double x) {
+	INLINE double floor(double x) {
 		double i = (i64)x;
 		return (x < 0.0 && x != i) ? i - 1 : i;
 	}
 
-	INLINE ELYSIUM_API float ceil(float x) {
+	INLINE float ceil(float x) {
 		float i = (i32)x;
 		return (x < 0.0f && x != i) ? i + 1.0f : i;
 	}
 
-	INLINE ELYSIUM_API double ceil(double x) {
+	INLINE double ceil(double x) {
 		double i = (i64)x;
 		return (x < 0.0 && x != i) ? i + 1 : i;
 	}
 
-	INLINE ELYSIUM_API float min(float x, float y) {
+	INLINE float min(float x, float y) {
 		return x < y ? x : y;
 	}
 
-	INLINE ELYSIUM_API double min(double x, double y) {
+	INLINE double min(double x, double y) {
 		return x < y ? x : y;
 	}
 
-	INLINE ELYSIUM_API float max(float x, float y) {
+	INLINE float max(float x, float y) {
 		return x > y ? x : y;
 	}
 
-	INLINE ELYSIUM_API double max(double x, double y) {
+	INLINE double max(double x, double y) {
 		return x > y ? x : y;
+	}
+
+	INLINE float clamp(float x, float minVal, float maxVal) {
+		return max(min(x, maxVal), minVal);
+	}
+
+	INLINE double clamp(double x, double minVal, double maxVal) {
+		return max(min(x, maxVal), minVal);
 	}
 
 	/**
@@ -283,19 +290,21 @@ namespace Math {
 	}
 
 	// TODO: Impl
-	ELYSIUM_API i32 random() {
+	/*
+	  i32 random() {
 		
 	}
 
-	ELYSIUM_API i32 randomInRange(i32 min, i32 max) {
+	  i32 randomInRange(i32 min, i32 max) {
 
 	}
 
-	ELYSIUM_API double dRandom() {
+	  double dRandom() {
 
 	}
 
-	ELYSIUM_API double dRandomInRange(double min, double max) {
+	  double dRandomInRange(double min, double max) {
 
 	}
+	*/
 }

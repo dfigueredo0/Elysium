@@ -1,59 +1,8 @@
 #pragma once
 
-/*
-* High lvl overview
-* typedef struct { float x, y } vec2;
-* 
-* Bounding box with all candidate pixels
-* x_min of all vertices
-* x_max of all vertices
-* y_min of all vertices
-* y_max of all vertices
-* 
-* constant delta's for horizontal and vertical steps
-* delta_w0_col = (v1.y - v2.y)
-* delta_w0_row = (v2.x - v1.x)
-* 
-* For z-fighting top-left rule for triangles 
-* bias = top_left(v1, v2)
-* 
-* p0 = { x_min, y_min } //top-left most point
-* w0 = edgeCross(&v1, &v2, &p) + bias0
-* w1 = edgeCross(&v2, &v0, &p) + bias1
-* w2 = edgeCross(&v0, &v1, &p) + bias2
-* 
-* for (int y = y_min; y <= y_max; y++) {
-*	for (int x = x_min; x <= x_max; x++) {
-
-*		if (p in triangle) 
-*			put pixel(x, y, color)
-*		w0 += delta_0_col
-*		w1 += delta_1_col
-*		w2 += delta_2_col
-*	}
-*	w0 += delta_0_row
-*	w1 += delta_1_row
-*	w2 += delta_2_row
-* }
-* 
-* 
-* barycentric coordinates:
-* p = (alpha, beta, gamma) how close to each verticy a + b + c = 1
-* 
-* alpha = cross product (v1v2, v1p)/ cross product (v0v1, v0,v2) = w0 / cross product (v0v1, v0,v2)
-* beta = cross product (v2v0, v2p)/ cross product (v0v1, v0,v2) = w1 / cross product (v0v1, v0,v2)
-* gamma = cross product (v0v1, v1p)/ cross product (v0v1, v0,v2) = w2 / cross product (v0v1, v0,v2)
-* 
-* area = edgeCross(&v0, &v1, &v2)
-* 
-* alpa = w0 / area
-* beta = w1 / area
-* gamma = w2 / area
-* 
-* TODO: Interpolate using alpah * v0 + beta * v1 + gamma * v2
-*/
-
 #include "Elysium/Core.h"
+#include "Functions.hpp"
+#include "Constants.h"
 #include "Vec.hpp"
 
 namespace Math {
@@ -63,12 +12,44 @@ namespace Math {
 	};
 
 	template<typename T>
-	bool isPointInTriangle(const vec<T, 2>& pt, const Triangle<T>& tri) {
+	T edgeFunction(const vec<T, 2>& a, const vec<T, 2>& b, const vec<T, 2>& c) {
+		return (c.x - a.x) * (b.y - a.y) - (c.y - a.y) * (b.x - a.x);
+	}
 
+	template<typename T>
+	bool isPointInTriangle(const vec<T, 2>& pt, const Triangle<T>& tri) {
+		T w0 = edgeFunction(tri.v1, tri.v2, pt);
+		T w1 = edgeFunction(tri.v2, tri.v0, pt);
+		T w2 = edgeFunction(tri.v0, tri.v1, pt);
+		return w0 >= 0 && w1 >= 0 && w2 >= 0;
 	}
 
 	template<typename T>
 	vec<T, 3> computeBarycentricCoords(const vec<T, 2>& p, const Triangle<T>& tri) {
+		T area = edgeFunction(tri.v0, tri.v1, tri.v2);
+		T w0 = edgeFunction(tri.v1, tri.v2, p);
+		T w1 = edgeFunction(tri.v2, tri.v0, p);
+		T w2 = edgeFunction(tri.v0, tri.v1, p);
+		return vec<T, 3>{ w0 / area, w1 / area, w2 / area };
+	}
 
+	template<typename T>
+	vec<T, 2> triangleCentroid(const Triangle<T>& tri) {
+		return (tri.v0 + tri.v1 + tri.v2) / static_cast<T>(3);
+	}
+
+	template<typename T>
+	T triangleArea(const Triangle<T>& tri) {
+		return static_cast<T>(0.5) * edgeFunction(tri.v0, tri.v1, tri.v2);
+	}
+
+	template<typename T>
+	bool isDegenerateTriangle(const Triangle<T>& tri) {
+		return Math::abs(triangleArea(tri)) < MathTraits<T>::EPSILON;
+	}
+
+	template<typename T, typename V>
+	V barycentricInterpolate(const V& v0, const V& v1, const V& v2, const vec<T, 3>& bary) {
+		return v0 * bary.x + v1 * bary.y + v2 * bary.z;
 	}
 }

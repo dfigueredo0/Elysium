@@ -4,6 +4,7 @@
 #include "Vec.hpp"
 #include "Plane.hpp"
 #include "Projection.hpp"
+#include "AABB.hpp"
 
 namespace Math {
 	template<typename T>
@@ -39,16 +40,30 @@ namespace Math {
 
 	template<typename T>
 	bool containsPoint(const Frustum<T>& frustum, const vec<T, 3>& point) {
-
+		for (int i = 0; i < 6; ++i) {
+			if (signedDistance(&frustum.sides[i], &point) < 0)
+				return false;
+		}
+		return true;
 	}
 
 	template<typename T>
-	ELYSIUM_API bool intersectsSphere(const Frustum<T>* f, const vec<T, 3>* center, T radius) {
-
-	} 
-
-	template<typename T> 
-	ELYSIUM_API bool intersectsAABB(const Frustum<T>* f, const vec<T, 3>* center, const vec<T, 3>* extents) {
-
+	  bool intersectsSphere(const Frustum<T>* f, const vec<T, 3>* center, T radius) {
+		for (int i = 0; i < 6; ++i) {
+			T dist = signedDistance(&f->sides[i], center);
+			if (dist < -radius)
+				return false;
+		}
+		return true;
 	}
+
+	template<typename T>
+	  bool intersectsAABB(const Frustum<T>* f, const AABB<T>& box) {
+		for (int i = 0; i < 6; ++i) {
+			if (!intersectsAABB(&f->sides[i], box))
+				return false;
+		}
+		return true;
+	}
+}
 }

@@ -150,48 +150,6 @@ namespace Math {
 		return q;
 	}
 
-	/**
-	*
-	*	@param q Starting quaternion value
-	*	@param r Ending quaternion value
-	*	@param t Interpolation ratio. Value range is [0, 1].
-	*/
-	template<typename T>
-	INLINE quat<T> quatSlerp(quat<T> q, quat<T> r, T t) {
-		q = quatNormalize(q);
-		r = quatNormalize(r);
-		quat<T> result;
-		T cosHalfTheta = quatDot(q, r);
-
-		if (cosHalfTheta < 0.0f) {
-			r.x = -r.x;
-			r.y = -r.y;
-			r.z = -r.z;
-			r.w = -r.w;
-			cosHalfTheta = -cosHalfTheta;
-		}
-
-		const T DOT_THRESHOLD = 0.9995f;
-		if (cosHalfTheta > DOT_THRESHOLD) {
-			// Linear interpolation + normalize
-			for (int i = 0; i < 4; ++i)
-				result.elements[i] = q.elements[i] + (r.elements[i] - q.elements[i]) * t;
-			return quatNormalize(result);
-		}
-
-
-		T theta = Math::acos(cosHalfTheta);
-		T sinTheta = Math::sin(theta);
-
-		T s0 = Math::sin((1 - t) * theta) / sinTheta;
-		T s1 = Math::sin(t * theta) / sinTheta;
-
-		for (int i = 0; i < 4; ++i)
-			result.elements[i] = q.elements[i] * s0 + r.elements[i] * s1;
-
-		return quatNormalize(result);
-	}
-
 	using quatf = quat<float>;
 	using quatd = quat<double>;
 }

@@ -113,16 +113,6 @@ namespace Math {
         return result;
     }
 
-
-    template<typename T, int R, int C>
-    INLINE Matrix<T, R, C> identity() {
-        static_assert(R == C, "Identity only defined for square matrices.");
-        Matrix<T, R, C> mat;
-        for (int i = 0; i < R; ++i)
-            mat(i, i) = static_cast<T>(1);
-        return mat;
-    }
-
     template<typename T, int R, int C>
     INLINE Matrix<T, R, C> operator+(const Matrix<T, R, C>& lhs, const Matrix<T, R, C>& rhs) {
         Matrix<T, R, C> result;
