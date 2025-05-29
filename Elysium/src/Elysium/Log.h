@@ -6,7 +6,7 @@
 
 
 namespace Elysium {
-	class ELYSIUM_API Log {
+	class Log {
 	public:
 		static void Init();
 

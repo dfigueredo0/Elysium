@@ -1,3 +1,4 @@
+# GLFW CMakeLists.txt
 cmake_minimum_required(VERSION 3.16...3.28 FATAL_ERROR)
 
 project(GLFW VERSION 3.5.0 LANGUAGES C HOMEPAGE_URL "https://www.glfw.org/")

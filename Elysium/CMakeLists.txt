@@ -5,7 +5,7 @@ file(GLOB_RECURSE ELYSIUM_HEADERS CONFIGURE_DEPENDS "src/**/*.h" "src/**/*.hpp" 
 
 set(ALL_ELYSIUM_FILES ${ELYSIUM_SRC} ${ELYSIUM_HEADERS})
 
-add_library(ElysiumLib SHARED ${ALL_ELYSIUM_FILES})
+add_library(ElysiumLib STATIC ${ALL_ELYSIUM_FILES})
 
 add_subdirectory(vendor/ImGui)
 
@@ -36,7 +36,6 @@ target_precompile_headers(ElysiumLib PRIVATE src/elypch.h)
 # Definitions
 target_compile_definitions(ElysiumLib PUBLIC ELY_PLATFORM_WINDOWS)
 target_compile_definitions(ElysiumLib PUBLIC GLFW_INCLUDE_NONE)
-target_compile_definitions(ElysiumLib PRIVATE ELY_BUILD_DLL)
 
 # Folder Layout
 source_group(

@@ -10,7 +10,7 @@
 #include "Elysium/ImGui/ImGuiLayer.h"
 
 namespace Elysium {
-	class ELYSIUM_API Application
+	class Application
 	{
 	public:
 		Application();

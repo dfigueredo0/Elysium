@@ -6,7 +6,7 @@
 #include "Layer.h"
 
 namespace Elysium {
-	class ELYSIUM_API LayerStack {
+	class LayerStack {
 	public:
 		LayerStack();
 		~LayerStack();

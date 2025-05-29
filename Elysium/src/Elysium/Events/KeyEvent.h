@@ -3,7 +3,7 @@
 #include "Event.h"
 
 namespace Elysium {
-	class ELYSIUM_API KeyEvent : public Event {
+	class KeyEvent : public Event {
 	public:
 		inline int GetKeyCode() const { return m_KeyCode; }
 
@@ -14,7 +14,7 @@ namespace Elysium {
 		int m_KeyCode;
 	};
 
-	class ELYSIUM_API KeyPressedEvent : public KeyEvent { // Maybe change repeat to a flag instead
+	class KeyPressedEvent : public KeyEvent { // Maybe change repeat to a flag instead
 	public:
 		KeyPressedEvent(int keycode, int repeatCount) : KeyEvent(keycode), m_RepeatCount(repeatCount) {}
 
@@ -31,7 +31,7 @@ namespace Elysium {
 		int m_RepeatCount;
 	};
 
-	class ELYSIUM_API KeyReleasedEvent : public KeyEvent {
+	class KeyReleasedEvent : public KeyEvent {
 	public:
 		KeyReleasedEvent(int keycode) : KeyEvent(keycode) {}
 
@@ -44,7 +44,7 @@ namespace Elysium {
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
 
-	class ELYSIUM_API KeyTypedEvent : public KeyEvent {
+	class KeyTypedEvent : public KeyEvent {
 	public:
 		KeyTypedEvent(int keycode) : KeyEvent(keycode) {}
 

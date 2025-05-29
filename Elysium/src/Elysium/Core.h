@@ -1,15 +1,5 @@
 #pragma once
 
-#ifdef _WIN32
-	#ifdef ELY_BUILD_DLL
-		#define ELYSIUM_API __declspec(dllexport)
-	#else
-		#define ELYSIUM_API __declspec(dllimport)
-	#endif
-	#else
-		#define ELYSIUM_API __attribute__((visibility("default")))
-#endif
-
 #ifdef ELY_ENABLE_ASSERTS
 #define ELY_ASSERT(x, ...) { if (!x) {ELY_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
 #define ELY_CORE_ASSERT(x, ...) { if (!x) {ELY_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
