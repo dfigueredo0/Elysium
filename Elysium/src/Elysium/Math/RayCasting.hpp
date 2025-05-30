@@ -9,7 +9,7 @@
 
 namespace Math {
 	template<typename T>
-	bool rayIntersectsPlane(const vec<T, 3>& rayOrigin, const vec<T, 3>& rayDir, const Plane<T>& plane, T& outT) {
+	bool rayIntersectsPlane(const vec<T, 3>& rayOrigin, const vec<T, 3>& rayDir, const Math::Plane<T>& plane, T& outT) {
 		T denom = vec3Dot(plane.normal, rayDir);
 		if (Math::abs(denom) < MathTraits<T>::EPSILON) return false;
 		outT = (plane.distance - vec3Dot(plane.normal, rayOrigin)) / denom;
@@ -17,7 +17,7 @@ namespace Math {
 	}
 
 	template<typename T>
-	bool rayIntersectsAABB(const vec<T, 3>& rayOrigin, const vec<T, 3>& rayDir, const AABB<T>& box, T& outT) {
+	bool rayIntersectsAABB(const vec<T, 3>& rayOrigin, const vec<T, 3>& rayDir, const Math::AABB<T>& box, T& outT) {
 		const vec<T, 3>& boxMin = box.min;
 		const vec<T, 3>& boxMax = box.max;
 

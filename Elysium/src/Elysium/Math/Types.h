@@ -1,0 +1,18 @@
+#pragma once
+
+#include "Vec.hpp"
+#include "Matrix.hpp"
+#include "Vec3.inl"
+#include "Vec4.inl"
+#include "Mat3.inl"
+#include "Mat4.inl"
+#include "Quaternion.hpp"
+#include "Projection.hpp"
+#include "Interpolation.hpp"
+#include "Transform3d.hpp"
+#include "Transform2d.hpp"
+#include "Plane.hpp"
+#include "AABB.hpp"
+#include "Frustum.hpp"
+#include "RayCasting.hpp"
+#include "Triangulate.hpp"

@@ -8,6 +8,9 @@
 #include <initializer_list>
 
 namespace Math {
+	template<typename T, int R, int C>
+	struct Matrix;
+
 	template<typename T, int N>
 	struct alignas(16) vec {
 		union {
@@ -47,23 +50,48 @@ namespace Math {
 
 		// vec2 from vec3
 		template<typename U>
-		constexpr vec(const vec<U, 3>& v) requires (N == 2) : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) {}
+		constexpr vec(const vec<U, 3>& v) {
+			static_assert(N == 2, "This constructor is only valid for vec2");
+			x = static_cast<T>(v.x);
+			y = static_cast<T>(v.y);
+		}
 
 		// vec2 from vec4
 		template<typename U>
-		constexpr vec(const vec<U, 4>& v) requires (N == 2) : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) {}
+		constexpr vec(const vec<U, 4>& v) {
+			static_assert(N == 2, "This constructor is only valid for vec2");
+			x = static_cast<T>(v.x);
+			y = static_cast<T>(v.y);
+		}
 
 		// vec3 from vec2
 		template<typename U>
-		constexpr vec(const vec<U, 2>& v, T z = T(0)) requires (N == 3) : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(z) {}
+		constexpr vec(const vec<U, 2>& v, T z = T(0)) {
+			static_assert(N == 3, "This constructor is only valid for vec3");
+			x = static_cast<T>(v.x);
+			y = static_cast<T>(v.y);
+			z = z;
+		}
 
 		// vec4 from vec2
 		template<typename U>
-		constexpr vec(const vec<U, 2>& v, T z = T(0), T w = T(0)) requires (N == 4) : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(z), w(w) {}
+		constexpr vec(const vec<U, 2>& v, T z = T(0), T w = T(0)) {
+			static_assert(N == 4, "This constructor is only valid for vec4");
+			x = static_cast<T>(v.x);
+			y = static_cast<T>(v.y);
+			z = z;
+			w = w;
+		}
 
 		//vec4 from vec3
 		template<typename U>
-		constexpr vec(const vec<U, 3>& v, T w = T(0)) requires (N == 4) : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z)), w(w) {}
+		constexpr vec(const vec<U, 3>& v, T w = T(0)) {
+			static_assert(N == 4, "This constructor is only valid for vec4");
+			x = static_cast<T>(v.x);
+			y = static_cast<T>(v.y);
+			z = static_cast<T>(v.z);
+			w = w;
+		}
 	};
 
 #if SIMD_LEVEL_AVX512 || SIMD_LEVEL_AVX2 || SIMD_LEVEL_AVX
@@ -373,8 +401,8 @@ namespace Math {
 	INLINE bool operator!=(const vec<T, N>& u, const vec<T, N>& v) {
 		return !(u == v);
 	}
+}
 
 #include "Vec2.inl"
 #include "Vec3.inl"
 #include "Vec4.inl"
-}

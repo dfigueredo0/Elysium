@@ -48,7 +48,7 @@ namespace Math {
 			negate = true; 
 		}
 		else if (x > M::PI / static_cast<T>(2)) {
-			x = PI - x; 
+			x = M::PI - x; 
 			negate = true; 
 		}
 

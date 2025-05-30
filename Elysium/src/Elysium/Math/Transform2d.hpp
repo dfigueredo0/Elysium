@@ -18,7 +18,7 @@ namespace Math {
 		constexpr Transform2D()
 			: local(Matrix<T, 3, 3>::identity()),
 			position(vec2Zero<T>()),
-			rotation(vec3<T>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(1)),
+			rotation(vec3<T>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(1))),
 			scale(vec2One<T>()),
 			dirty(false),
 			parent(nullptr)

@@ -35,6 +35,7 @@ namespace Elysium {
 		void RegisterCallbacks();
 	private:
 		GLFWwindow* m_Window;
+		RenderContext* m_Context;
 
 		struct WindowData {
 			std::string Title;

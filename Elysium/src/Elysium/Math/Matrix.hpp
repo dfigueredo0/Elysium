@@ -14,6 +14,17 @@ namespace Math {
             memset(data, 0, sizeof(data));
         }
 
+        constexpr INLINE Matrix(std::initializer_list<T> list) {
+            int i = 0;
+            for (auto it = list.begin(); it != list.end() && i < R * C; ++it, ++i) {
+                data[i] = *it;
+            }
+            // Optional: assert or fill rest with zero if list too short
+            while (i < R * C) {
+                data[i++] = T(0);
+            }
+        }
+
         INLINE T& operator()(int row, int col) {
             assert(row < R && col < C);
             return data[row * C + col];
@@ -22,6 +33,28 @@ namespace Math {
         INLINE const T& operator()(int row, int col) const {
             assert(row < R && col < C);
             return data[row * C + col];
+        }
+        
+        INLINE Matrix<T, C, R> transpose() const {
+            Matrix<T, C, R> result;
+            for (int i = 0; i < R; ++i)
+                for (int j = 0; j < C; ++j)
+                    result(j, i) = (*this)(i, j);
+            return result;
+        }
+        
+        INLINE vec<T, C> getRow(int i) const {
+            vec<T, C> result;
+            for (int j = 0; j < C; ++j) {
+                result.elements[j] = data[i * C + j];
+            }
+            return result;
+        }
+
+        INLINE void setRow(int i, const vec<T, C>& row) {
+            for (int j = 0; j < C; ++j) {
+                data[i * C + j] = row.elements[j];
+            }
         }
     };
 
@@ -82,35 +115,6 @@ namespace Math {
         for (int i = 0; i < R; ++i)
             mat(i, i) = static_cast<T>(1);
         return mat;
-    }
-
-    template<typename T, int R, int C>
-    Matrix<T, R, C> operator+(const Matrix<T, R, C>& rhs) {
-        Matrix<T, R, C> result;
-        for (int i = 0; i < R * C; ++i)
-            result.data[i] = this->data[i] + rhs.data[i];
-        return result;
-    }
-
-    template<typename T, int R, int C>
-    Matrix<T, R, C> operator-(const Matrix<T, R, C>& rhs) {
-        Matrix<T, R, C> result;
-        for (int i = 0; i < R * C; ++i)
-            result.data[i] = this->data[i] - rhs.data[i];
-        return result;
-    }
-
-    template<typename T, int R, int C, int U>
-    Matrix<T, R, U> operator*(const Matrix<T, C, U>& rhs) {
-        Matrix<T, R, U> result;
-        for (int i = 0; i < R; ++i) {
-            for (int j = 0; j < U; ++j) {
-                for (int k = 0; k < C; ++k) {
-                    result(i, j) += (*this)(i, k) * rhs(k, j);
-                }
-            }
-        }
-        return result;
     }
 
     template<typename T, int R, int C>
@@ -301,25 +305,6 @@ namespace Math {
         return result;
     }
 
-    template<typename T, int R, int C>
-    Matrix<T, C, R> transpose() {
-        return getTransposition(*this);
-    }
-
-    template<typename T, int C>
-    INLINE vec<T, C> getRow(int i) {
-        vec<T, C> result;
-        for (int j = 0; j < C; ++j)
-            result.elements[j] = data[i * C + j];
-        return result;
-    }
-
-    template<typename T, int C>
-    INLINE void setRow(int i, const vec<T, C>& row) {
-        for (int j = 0; j < C; ++j)
-            data[i * C + j] = row.elements[j];
-    }
-
     using mat2f = Matrix<float, 2, 2>;
     using mat2x3f = Matrix<float, 2, 3>;
     using mat2x4f = Matrix<float, 2, 4>;
@@ -328,15 +313,17 @@ namespace Math {
     using mat2x3d = Matrix<double, 2, 3>;
     using mat2x4d = Matrix<double, 2, 4>;
 
-#include "Mat3.inl"
+
     using mat3x2f = Matrix<float, 3, 2>;
     using mat3x4f = Matrix<float, 3, 4>;
     using mat3x2d = Matrix<double, 3, 2>;
     using mat3x4d = Matrix<double, 3, 4>;
 
-#include "Mat4.inl"
     using mat4x2f = Matrix<float, 4, 2>;
     using mat4x3f = Matrix<float, 4, 3>;
     using mat4x2d = Matrix<double, 4, 2>;
     using mat4x3d = Matrix<double, 4, 3>;
 }
+
+#include "Mat3.inl"
+#include "Mat4.inl"

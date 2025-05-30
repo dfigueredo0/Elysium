@@ -19,14 +19,14 @@ namespace SIMD {
 
 	INLINE __m128 swizzle_xywz(__m128 a) {
 #if SIMD_LEVEL_AVX2 || SIMD_LEVEL_AVX
-		return _mm_permute_ps(a, 0xE4);
+		return _mm_permute_ps(a, 0b0101);
 #else
 		return _mm_shuffle_ps(a, a, 0xE4);
 #endif  
 	}
 
 	INLINE __m256d swizzle_xywz(__m256d a) {
-		return _mm256_permute_pd(a, 0xE4);
+		return _mm256_permute_pd(a, 0b0101);
 	}
 
 	INLINE __m128 round_even(__m128 a) {
