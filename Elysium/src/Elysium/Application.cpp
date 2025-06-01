@@ -12,45 +12,6 @@ namespace Elysium
 {
 	Application* Application::s_Instance = nullptr;
 
-	static GLenum ShaderDataTypeToOpenGLType(ShaderDataType type) {
-		switch (type)
-		{
-		case Elysium::ShaderDataType::Int:
-			return GL_INT;
-		case Elysium::ShaderDataType::Int2:
-			return GL_INT;
-		case Elysium::ShaderDataType::Int3:
-			return GL_INT;
-		case Elysium::ShaderDataType::Int4:
-			return GL_INT;
-		case Elysium::ShaderDataType::Float:
-			return GL_FLOAT;
-		case Elysium::ShaderDataType::Float2:
-			return GL_FLOAT;
-		case Elysium::ShaderDataType::Float3:
-			return GL_FLOAT;
-		case Elysium::ShaderDataType::Float4:
-			return GL_FLOAT;
-		case Elysium::ShaderDataType::Vec2:
-			return GL_FLOAT_VEC2;
-		case Elysium::ShaderDataType::Vec3:
-			return GL_FLOAT_VEC3;
-		case Elysium::ShaderDataType::Vec4:
-			return GL_FLOAT_VEC4;
-		case Elysium::ShaderDataType::Mat3:
-			return GL_FLOAT_MAT3;
-		case Elysium::ShaderDataType::Mat4:
-			return GL_FLOAT_MAT4;
-		case Elysium::ShaderDataType::Bool:
-			return GL_BOOL;
-		default:
-			break;
-		}
-
-		ELY_CORE_ASSERT(false, "Unknown ShaderDataType!")
-		return 0;
-	}
-
 	Application::Application()
 	{
 		ELY_CORE_ASSERT(!s_Instance, "Application already exists!");
@@ -62,8 +23,7 @@ namespace Elysium
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 
-		glGenVertexArrays(1, &m_VertexArray);
-		glBindVertexArray(m_VertexArray);
+		m_VertexArray.reset(VertexArray::Create());
 
 		float vertices[21] = {
 			-0.5f, -0.5f, 0.0f, 0.85f, 0.85f, 0.0f, 1.0f,
@@ -71,32 +31,40 @@ namespace Elysium
 			 0.0f,  0.5f, 0.0f, 0.85f, 0.0f, 0.85f, 1.0f
 		};
 
-		{
-			m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-			BufferLayout layout = {
-				{ ShaderDataType::Float3, "a_Position" },
-				{ ShaderDataType::Float4, "a_Color" }
-			};
-			m_VertexBuffer->SetLayout(layout);
-		}
-
-		u32 index = 0;
-		const auto& layout = m_VertexBuffer->GetLayout();
-		for (const auto& e : layout) {
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, 
-				e.GetComponentCount(), 
-				ShaderDataTypeToOpenGLType(e.type), 
-				e.normalized ? GL_TRUE : GL_FALSE, 
-				layout.GetStride(),
-				(const void*) e.offset);
-			index++;
-		}
-
+		std::shared_ptr<VertexBuffer> vBuffer;
+		vBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+		BufferLayout layout = {
+			{ ShaderDataType::Float3, "a_Position" },
+			{ ShaderDataType::Float4, "a_Color" }
+		};
+		vBuffer->SetLayout(layout);
+		m_VertexArray->AddVertexBuffer(vBuffer);
 
 		u32 indices[3] = { 0, 1, 2 };
+		std::shared_ptr<IndexBuffer> iBuffer;
+		iBuffer.reset(IndexBuffer::Create(indices, 3));
+		m_VertexArray->SetIndexBuffer(iBuffer);
 
-		m_IndexBuffer.reset(IndexBuffer::Create(indices, 3));
+		m_SquareVA.reset(VertexArray::Create());
+		
+		float sqVertices[12] = {
+			-0.75f, -0.75f, 0.0f,
+			 0.75f, -0.75f, 0.0f,
+			 0.75f,  0.75f, 0.0f,
+			-0.75f,  0.75f, 0.0f
+		};
+
+		std::shared_ptr<VertexBuffer> SquareVB;
+		SquareVB.reset(VertexBuffer::Create(sqVertices, sizeof(sqVertices)));
+		SquareVB->SetLayout({
+			{ ShaderDataType::Float3, "a_Position" },
+		});
+		m_SquareVA->AddVertexBuffer(SquareVB);
+
+		u32 points[6] = { 0, 1, 2, 2, 3, 0 };
+		std::shared_ptr<IndexBuffer> SquareIB;
+		SquareIB.reset(IndexBuffer::Create(points, sizeof(points) / sizeof(u32)));
+		m_SquareVA->SetIndexBuffer(SquareIB);
 
 		std::string vertexSource = R"(
 			#version 450 core
@@ -129,6 +97,34 @@ namespace Elysium
 		)";
 
 		m_Shader.reset(new Shader(vertexSource, fragmentSource));
+
+		std::string vertexSrc = R"(
+			#version 450 core
+			
+			layout(location = 0) in vec3 a_Position;
+			
+			out vec3 v_Position;
+
+			void main() {
+				v_Position = a_Position;
+				gl_Position = vec4(a_Position, 1.0);
+			}
+			
+		)";
+
+		std::string fragmentSrc = R"(
+			#version 450 core
+			
+			layout(location = 0) out vec4 rgba;
+	
+			in vec3 v_Position;	
+	
+			void main() {
+				rgba = vec4(0.2f, 0.4f, 0.8f, 1.0);
+			}
+		)";
+
+		m_BlueShader.reset(new Shader(vertexSrc, fragmentSrc));
 	}
 
 	Application::~Application()
@@ -142,9 +138,13 @@ namespace Elysium
 			glClearColor(0.13f, 0.13f, 0.13f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			m_BlueShader->Bind();
+			m_SquareVA->Bind();
+			glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
 			m_Shader->Bind();
-			glBindVertexArray(m_VertexArray);
-			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+			m_VertexArray->Bind();
+			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
 			for (Layer* layer : m_LayerStack) {
 				layer->OnUpdate();
