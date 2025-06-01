@@ -1,6 +1,7 @@
 #include "elypch.h"
 
 #include "Shader.h"
+#include "Elysium/Math/type_ptr.hpp"
 
 #include <glad/glad.h>
 
@@ -130,5 +131,11 @@ namespace Elysium {
 	void Shader::Unbind() const
 	{
 		glUseProgram(0);
+	}
+
+	void Shader::UploadUniformMat4(const std::string& name, const mat4& matrix)
+	{
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniformMatrix4fv(location, 1, GL_TRUE, Math::value_ptr(matrix));
 	}
 }

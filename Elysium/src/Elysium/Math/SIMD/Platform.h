@@ -21,23 +21,33 @@
 #if SIMD_ARCH_X86
 #if defined(__AVX512F__)
 #define SIMD_LEVEL_AVX512 1
-#elif defined(__AVX2__)
+#else
+#define SIMD_LEVEL_AVX512 0
+#endif
+
+#if defined(__AVX2__)
 #define SIMD_LEVEL_AVX2 1
-#elif defined(__AVX__)
+#else
+#define SIMD_LEVEL_AVX2 0
+#endif
+
+#if defined(__AVX__)
 #define SIMD_LEVEL_AVX 1
-#elif defined(__SSE4_1__)
+#else
+#define SIMD_LEVEL_AVX 0
+#endif
+
+#if defined(__SSE4_1__)
 #define SIMD_LEVEL_SSE41 1
 #else
-#define SIMD_LEVEL_SCALAR 1
+#define SIMD_LEVEL_SSE41 0
 #endif
-#elif SIMD_ARCH_ARM
+
 #if defined(__ARM_NEON) || defined(__ARM_NEON__)
-#define SIMD_NEON 1
+#define SIMD_LEVEL_NEON 1
 #else
-#define SIMD_LEVEL_SCALAR 1
+#define SIMD_LEVEL_NEON 0
 #endif
-#else
-#define SIMD_LEVEL_SCALAR 1
 #endif
 
 // Include SIMD headers

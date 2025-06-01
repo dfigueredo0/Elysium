@@ -10,20 +10,20 @@ namespace Math {
 	*   @brief Creates and returns an orthographc projection matrix. Typically used to render flat or 2D scenes.
 	*/
 	template<typename T>
-	INLINE Matrix<T, 4, 4> orthographic(T left, T right, T bottom, T top, T near, T far) {
-		Matrix<T, 4, 4> mat = Matrix<T, 4, 4>::identity();
+	INLINE Matrix<T, 4, 4> orthographic(T left, T right, T bottom, T top, T zNear = T(-1), T zFar = T(1)) {
+		Matrix<T, 4, 4> mat = Math::identity<T, 4, 4>();
 
-		T lr = 1.0f / (left - right);
-		T bt = 1.0f / (bottom - top);
-		T nf = 1.0f / (near - far);
+		T rl = static_cast<T>(1) / (right - left);
+		T tb = static_cast<T>(1) / (top - bottom);
+		T fn = static_cast<T>(1) / (zFar - zNear);
 
-		mat.data[0] = -2.0f * lr;
-		mat.data[5] = -2.0f * bt;
-		mat.data[10] = -2.0f * nf;
+		mat(0, 0) = static_cast<T>(2) * rl;
+		mat(1, 1) = static_cast<T>(2) * tb;
+		mat(2, 2) = static_cast<T>(-2) * fn;
 
-		mat.data[12] = (left + right) * lr;
-		mat.data[13] = (top + bottom) * bt;
-		mat.data[14] = (far + near) * nf;
+		mat(0, 3) = -(right + left) * rl;
+		mat(1, 3) = -(top + bottom) * tb;
+		mat(2, 3) = -(zFar + zNear) * fn;
 
 		return mat;
 	}
@@ -37,14 +37,14 @@ namespace Math {
 	*	@param far The far clipping plane distance
 	*/
 	template<typename T>
-	INLINE Matrix<T, 4, 4> perspective(T fov, T aspect, T near, T far) {
-		Matrix<T, 4, 4> mat = Matrix<T, 4, 4>::identity();
+	INLINE Matrix<T, 4, 4> perspective(T fov, T aspect, T zNear, T zFar) {
+		Matrix<T, 4, 4> mat = Math::identity<T, 4, 4>();
 
-		mat.data[0] = aspect * (Math::cot(fov / 2));
+		mat.data[0] = aspect * (Math::cot(fov / static_cast<T>(2)));
 		mat.data[5] = Math::cot(fov / 2);
-		mat.data[10] = far / (far - near);
-		mat.data[11] = 1.0f;
-		mat.data[14] = -((2.0f * far * near) / (far - near));
+		mat.data[10] = zFar / (zFar - zNear);
+		mat.data[11] = static_cast<T>(1);
+		mat.data[14] = -((static_cast<T>(2) * zFar * zNear) / (zFar - zNear));
 
 		return mat;
 	}
@@ -66,7 +66,7 @@ namespace Math {
 		vec<T, 3> u = Math::vec3Cross(right, forward);
 
 		mat.setRow(0, vec<T, 4>(right.x, right.y, right.z, -Math::vec3Dot(right, pos)));
-		mat.setRow(1, vec<T, 3>(u.x, u.y, u.z, -vec3Dot(u, pos)));
+		mat.setRow(1, vec<T, 4>(u.x, u.y, u.z, -vec3Dot(u, pos)));  // fixed
 		mat.setRow(2, vec<T, 4>(-forward.x, -forward.y, -forward.z, vec3Dot(forward, pos)));
 		mat.setRow(3, vec<T, 4>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1)));
 

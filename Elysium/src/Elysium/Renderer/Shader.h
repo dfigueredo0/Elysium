@@ -2,6 +2,8 @@
 
 #include "../Core.h"
 
+#include "Elysium/Math/Math.hpp"
+
 #include <string>
 
 namespace Elysium{
@@ -12,6 +14,8 @@ namespace Elysium{
 
 		void Bind() const;
 		void Unbind() const;
+
+		void UploadUniformMat4(const std::string& name, const mat4& matrix);
 	private:
 		u32 m_RendererID;
 	};

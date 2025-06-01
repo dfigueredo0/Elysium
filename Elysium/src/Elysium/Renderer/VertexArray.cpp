@@ -11,13 +11,13 @@ namespace Elysium {
 	{
 		switch (Renderer::GetAPI())
 		{
-		case Elysium::RendererAPI::None:
+		case Elysium::RenderAPI::API::None:
 			break;
-		case Elysium::RendererAPI::OpenGL:
+		case Elysium::RenderAPI::API::OpenGL:
 			return new OpenGLVertexArray();
-		case Elysium::RendererAPI::DirectX3D:
+		case Elysium::RenderAPI::API::DirectX3D:
 			break;
-		case Elysium::RendererAPI::Vulkan:
+		case Elysium::RenderAPI::API::Vulkan:
 			break;
 		default:
 			break;

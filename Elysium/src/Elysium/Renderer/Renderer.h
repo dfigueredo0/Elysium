@@ -1,19 +1,24 @@
 #pragma once
 
+#include "Shader.h"
+#include "RenderCommand.h"
+#include "Camera.h"
+
 namespace Elysium {
-	enum class RendererAPI {
-		None = 0,
-		OpenGL = 1,
-		DirectX3D = 2,
-		Vulkan = 3
-	};
 
 	class Renderer {
 	public:
-		inline static RendererAPI SetAPI(RendererAPI API) { s_RendererAPI = API; }
-		inline static RendererAPI GetAPI() { return s_RendererAPI; }
-	private:
-		static RendererAPI s_RendererAPI;
+		static void BeginScene(OrthographicCamera& camera);
+		static void EndScene();
 
+		static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray);
+
+		inline static RenderAPI::API GetAPI() { return RenderAPI::GetAPI(); }
+	private:
+		struct SceneData {
+			mat4 ViewProjectionMatrix;
+		};
+
+		static SceneData* m_SceneData;
 	};
 }

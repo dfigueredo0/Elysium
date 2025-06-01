@@ -1,5 +1,7 @@
 ﻿#include "elypch.h"
 
+#include "Elysium/KeyCodeTranslation.hpp"
+
 #include "Platform/OpenGL/OpenGLContext.h"
 #include "Win32_Window.h"
 
@@ -114,19 +116,19 @@ namespace Elysium {
 		{
 		case GLFW_PRESS:
 		{
-			KeyPressedEvent event(key, 0);
+			KeyPressedEvent event(TranslateFromGLFWKey(key), 0);
 			data.EventCallback(event);
 			break;
 		}
 		case GLFW_RELEASE:
 		{
-			KeyReleasedEvent event(key);
+			KeyReleasedEvent event(TranslateFromGLFWKey(key));
 			data.EventCallback(event);
 			break;
 		}
 		case GLFW_REPEAT:
 		{
-			KeyPressedEvent event(key, 1);
+			KeyPressedEvent event(TranslateFromGLFWKey(key), 1);
 			data.EventCallback(event);
 			break;
 		}

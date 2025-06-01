@@ -16,7 +16,10 @@ namespace Math {
 		union {
 			T elements[4];
 			struct {
-				T x, y, z, w;
+				union { T x, r, s; };
+				union { T y, g, r; };
+				union { T z, b, p; };
+				union { T w, a, q; };
 			};
 		};
 
@@ -99,8 +102,13 @@ namespace Math {
 	struct alignas(32) vec<double, 4> {
 		union {
 			__m256d data;
+			struct {
+				union { double x, r, s; };
+				union { double y, g, r; };
+				union { double z, b, p; };
+				union { double w, a, q; };
+			};
 			double elements[4];
-			struct { double x, y, z, w; };
 		};
 
 		INLINE vec() : data(_mm256_setzero_pd()) {}
@@ -147,7 +155,12 @@ namespace Math {
 		union {
 			__m128 data;
 			float elements[4];
-			struct { float x, y, z, w; };
+			struct {
+				union { float x, r, s; };
+				union { float y, g, r; };
+				union { float z, b, p; };
+				union { float w, a, q; };
+			};
 		};
 
 		INLINE vec() : data(_mm_setzero_ps()) {}
@@ -400,6 +413,31 @@ namespace Math {
 	template<typename T, int N>
 	INLINE bool operator!=(const vec<T, N>& u, const vec<T, N>& v) {
 		return !(u == v);
+	}
+
+	template<typename T, int N>
+	INLINE T vecDot(const vec<T, N>& a, const vec<T, N>& b) {
+		T result = T(0);
+		for (int i = 0; i < N; ++i)
+			result += a.elements[i] * b.elements[i];
+		return result;
+	}
+
+	template<typename T, int N>
+	INLINE vec<T, N> operator-(const vec<T, N>& v) {
+		vec<T, N> result;
+		for (int i = 0; i < N; ++i)
+			result.elements[i] = -v.elements[i];
+		return result;
+	}
+
+	template<typename T, int N>
+	INLINE vec<T, N> vecNormalized(const vec<T, N>& v) {
+		T len = sqrt(vecDot(v, v));
+		vec<T, N> result;
+		for (int i = 0; i < N; ++i)
+			result.elements[i] = v.elements[i] / len;
+		return result;
 	}
 }
 

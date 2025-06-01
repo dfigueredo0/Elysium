@@ -4,12 +4,10 @@
 #include "Window.h"
 
 #include "Events/Event.h"
-#include "Events/ApplicationEvent.h"
 #include "Layers/LayerStack.h"
+#include "Events/ApplicationEvent.h"
 
-#include "Renderer/Shader.h"
-#include "Renderer/Buffer.h"
-#include "Renderer/VertexArray.h"
+#include "Elysium/Core/Timestep.h"
 
 #include "Elysium/ImGui/ImGuiLayer.h"
 
@@ -37,11 +35,7 @@ namespace Elysium {
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
-
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<Shader> m_BlueShader;
-		std::shared_ptr<VertexArray> m_VertexArray;
-		std::shared_ptr<VertexArray> m_SquareVA;
+		float m_LastFrameTime = 0.0f;
 
 		static Application* s_Instance;
 	};

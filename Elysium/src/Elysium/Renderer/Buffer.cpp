@@ -10,15 +10,15 @@ namespace Elysium {
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None:
+		case RenderAPI::API::None:
 			ELY_CORE_ASSERT(false, "Renderer API None is currently not supported!");
 			return nullptr;
-		case RendererAPI::OpenGL:
+		case RenderAPI::API::OpenGL:
 			return new OpenGLVertexBuffer(vertices, size);
-		case RendererAPI::DirectX3D:
+		case RenderAPI::API::DirectX3D:
 			ELY_CORE_ASSERT(false, "Renderer API DirectX3D is currently not supported!");
 			return nullptr;
-		case RendererAPI::Vulkan:
+		case RenderAPI::API::Vulkan:
 			ELY_CORE_ASSERT(false, "Renderer API Vulkan is currently not supported!");
 			return nullptr;
 		}
@@ -30,15 +30,15 @@ namespace Elysium {
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None:
+		case RenderAPI::API::None:
 			ELY_CORE_ASSERT(false, "Renderer API None is currently not supported!");
 			return nullptr;
-		case RendererAPI::OpenGL:
+		case RenderAPI::API::OpenGL:
 			return new OpenGLIndexBuffer(indices, size);
-		case RendererAPI::DirectX3D:
+		case RenderAPI::API::DirectX3D:
 			ELY_CORE_ASSERT(false, "Renderer API DirectX3D is currently not supported!");
 			return nullptr;
-		case RendererAPI::Vulkan:
+		case RenderAPI::API::Vulkan:
 			ELY_CORE_ASSERT(false, "Renderer API Vulkan is currently not supported!");
 			return nullptr;
 		}

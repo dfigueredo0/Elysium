@@ -1,6 +1,7 @@
 #include "elypch.h"
 #include "Win32_Input.h"
 #include "Elysium/Application.h"
+#include "Elysium/KeyCodeTranslation.hpp"
 
 #include <GLFW/glfw3.h>
 
@@ -11,7 +12,7 @@ namespace Elysium {
 	bool Win32_Input::IsKeyPressedImpl(int keycode)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-		auto state = glfwGetKey(window, keycode);
+		auto state = glfwGetKey(window, TranslateToGLFWKey(keycode));
 		
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
