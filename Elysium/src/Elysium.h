@@ -2,15 +2,15 @@
 
 // For use by Elysium applications
 
-#include "Elysium/Core.h"
-#include "Elysium/Application.h"
+#include "Elysium/Core/Core.h"
+#include "Elysium/Core/Application.h"
 #include "Elysium/Layers/Layer.h"
-#include "Elysium/Log.h"
+#include "Elysium/Core/Log.h"
 
 #include "Elysium/Core/Timestep.h"
 
-#include "Elysium/Input.h"
-#include "Elysium/KeyCodes.h"
+#include "Elysium/Core/Input.h"
+#include "Elysium/Core/KeyCodes.h"
 
 #include "Elysium/ImGui/ImGuiLayer.h"
 
@@ -20,11 +20,9 @@
 
 #include "Elysium/Renderer/Buffer.h"
 #include "Elysium/Renderer/Shader.h"
+#include "Elysium/Renderer/Texture.h"
 #include "Elysium/Renderer/VertexArray.h"
 
 #include "Elysium/Renderer/Camera.h"
-#pragma endregion
-
-#pragma region Entry Point
-#include "Elysium/EntryPoint.h"
+#include "Elysium/Renderer/CameraController.h"
 #pragma endregion

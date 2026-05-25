@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Elysium/Core.h"
+#include "Elysium/Core/Core.h"
 #include "SIMD/Platform.h"
 #include "Vec.hpp"
 #include <cstring>
@@ -328,11 +328,22 @@ namespace Math {
         T c = Math::cos(rotation);
         T s = Math::sin(rotation);
 
-        // Assuming rotation about z-axis (0, 0, 1) for 2D camera
+        // Assuming rotation about z-axis (0, 0, 1) for 2D camera, TODO add for any axis
         result(0, 0) = c;
         result(0, 1) = -s;
         result(1, 0) = s;
         result(1, 1) = c;
+
+        return result;
+    }
+
+    template<typename T>
+    static Matrix<T, 4, 4> scaleMatrix(const vec<T, 3>& size) {
+        Matrix<T, 4, 4> result = Math::identity<T, 4, 4>();
+
+        result(0, 0) = size.x;
+        result(1, 1) = size.y;
+        result(2, 2) = size.z;
 
         return result;
     }

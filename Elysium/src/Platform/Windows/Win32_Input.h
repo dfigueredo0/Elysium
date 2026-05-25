@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Elysium/Input.h"
+#include "Elysium/Core/Input.h"
 
 namespace Elysium {
 	/* The polymorphism is not necessary here (neither in the window class). The platform will not be decided at runtime, it's known at compile time. So no need at all for runtime polymorphism.

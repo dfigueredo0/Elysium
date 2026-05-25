@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Elysium/Core.h"
+#include "Elysium/Core/Core.h"
 #include "Functions.hpp"
 #include "Matrix.hpp"
 #include "Vec.hpp"

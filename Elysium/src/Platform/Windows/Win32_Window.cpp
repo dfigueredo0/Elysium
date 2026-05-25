@@ -1,9 +1,9 @@
 ﻿#include "elypch.h"
 
-#include "Elysium/KeyCodeTranslation.hpp"
+#include "Elysium/Core/KeyCodeTranslation.hpp"
 
 #include "Platform/OpenGL/OpenGLContext.h"
-#include "Win32_Window.h"
+#include "Platform/Windows/Win32_Window.h"
 
 #include "Elysium/Events/ApplicationEvent.h"
 #include "Elysium/Events/MouseEvent.h"
@@ -12,14 +12,14 @@
 #include "Elysium/Renderer/RenderContext.h"
 
 namespace Elysium {
-	static bool s_GLFWInitialized = false;
+	static u8 s_GLFWWindowCount = 0;
 
 	static void ErrorCallback(int err, const char* desc) {
 		ELY_CORE_ERROR("GLFW Error ({0}): {1}", err, desc);
 	}
 
-	Window* Window::Create(const WindowProps& props) {
-		return new Win32_Window(props);
+	Scope<Window> Window::Create(const WindowProps& props) {
+		return CreateScope<Win32_Window>(props);
 	}
 
 	Win32_Window::Win32_Window(const WindowProps& props)
@@ -29,11 +29,14 @@ namespace Elysium {
 
 	Win32_Window::~Win32_Window()
 	{
+		ELY_PROFILE_FUNCTION();
+
 		Shutdown();
 	}
 
 	void Win32_Window::OnUpdate()
 	{
+		ELY_PROFILE_FUNCTION();
 		glfwPollEvents();
 		m_Context->SwapBuffers();
 	}
@@ -55,18 +58,29 @@ namespace Elysium {
 
 	void Win32_Window::Init(const WindowProps& props)
 	{
+		ELY_PROFILE_FUNCTION();
+
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
 
 		ELY_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
-		if (!s_GLFWInitialized) {
+		if (s_GLFWWindowCount == 0) {
 			// TODO: glfwTerminate on system shutdown 
 			int success = glfwInit();
 			ELY_CORE_ASSERT(success, "Could not initialize GLFW!");
 			glfwSetErrorCallback(ErrorCallback);
-			s_GLFWInitialized = true;
+		}
+
+		{
+			ELY_PROFILE_SCOPE("glfwCreateWindow");
+#if defined(ELY_DEBUG)
+			if (Renderer::GetAPI() == RenderAPI::API::OpenGL)
+				glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+#endif
+			m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+			++s_GLFWWindowCount;
 		}
 
 		glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
@@ -77,7 +91,7 @@ namespace Elysium {
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		
-		m_Context = new OpenGLContext(m_Window);
+		m_Context = RenderContext::Create(m_Window);
 		m_Context->Init();
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
@@ -89,11 +103,15 @@ namespace Elysium {
 	void Win32_Window::Shutdown()
 	{
 		glfwDestroyWindow(m_Window);
+		--s_GLFWWindowCount;
+
+		if (s_GLFWWindowCount == 0)
+			glfwTerminate();
 	}
 
 	void Win32_Window::WindowResizeCallback(GLFWwindow* window, int width, int height)
 	{
-		auto& data = *(WindowData*)glfwGetWindowUserPointer(window);
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 		data.Width = width;
 		data.Height = height;
 
@@ -103,14 +121,14 @@ namespace Elysium {
 
 	void Win32_Window::WindowCloseCallback(GLFWwindow* window)
 	{
-		auto& data = *(WindowData*)glfwGetWindowUserPointer(window);
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 		WindowCloseEvent event;
 		data.EventCallback(event);
 	}
 
 	void Win32_Window::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
-		auto& data = *(WindowData*)glfwGetWindowUserPointer(window);
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
 		switch (action)
 		{
@@ -136,14 +154,14 @@ namespace Elysium {
 	}
 
 	void Win32_Window::KeyCharCallback(GLFWwindow* window, unsigned int keycode) {
-		auto& data = *(WindowData*)glfwGetWindowUserPointer(window);
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 		KeyTypedEvent event(keycode);
 		data.EventCallback(event);
 	}
 
 	void Win32_Window::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 	{
-		auto& data = *(WindowData*)glfwGetWindowUserPointer(window);
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
 		switch (action)
 		{
@@ -164,7 +182,7 @@ namespace Elysium {
 
 	void Win32_Window::ScrollCallback(GLFWwindow* window, double xOffset, double yOffset)
 	{
-		auto& data = *(WindowData*)glfwGetWindowUserPointer(window);
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
 		MouseScrolledEvent event((float)xOffset, (float)yOffset);
 		data.EventCallback(event);
@@ -172,7 +190,7 @@ namespace Elysium {
 
 	void Win32_Window::CursorPosCallback(GLFWwindow* window, double xPos, double yPos)
 	{
-		auto& data = *(WindowData*)glfwGetWindowUserPointer(window);
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
 		MouseMovedEvent event((float)xPos, (float)yPos);
 		data.EventCallback(event);

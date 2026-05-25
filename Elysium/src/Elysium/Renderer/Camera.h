@@ -7,6 +7,8 @@ namespace Elysium {
 	public:
 		OrthographicCamera(float left, float right, float bottom, float top);
 
+		void SetProjection(float left, float right, float bottom, float top);
+		
 		const vec3& GetPosition() const { return m_Position; }
 		void SetPosition(const vec3& position) { 
 			m_Position = position; 
@@ -18,6 +20,7 @@ namespace Elysium {
 			m_Rotation = rotation; 
 			RecalculateViewMatrix(); 
 		}
+
 
 		const mat4& getProjectionMatrix() const { return m_ProjectionMatrix; }
 		const mat4& getViewMatrix() const { return m_ViewMatrix; }

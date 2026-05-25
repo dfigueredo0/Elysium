@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Elysium/Core.h"
+#include "Elysium/Core/Core.h"
 #include "SIMD/Common.h"
 #include "Functions.hpp"
 

@@ -7,14 +7,14 @@
 #include "Platform/OpenGL/OpenGLVertexArray.h"
 
 namespace Elysium {
-	VertexArray* VertexArray::Create()
+	Ref<VertexArray> VertexArray::Create()
 	{
 		switch (Renderer::GetAPI())
 		{
 		case Elysium::RenderAPI::API::None:
 			break;
 		case Elysium::RenderAPI::API::OpenGL:
-			return new OpenGLVertexArray();
+			return std::make_shared<OpenGLVertexArray>();
 		case Elysium::RenderAPI::API::DirectX3D:
 			break;
 		case Elysium::RenderAPI::API::Vulkan:

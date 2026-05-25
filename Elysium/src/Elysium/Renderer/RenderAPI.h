@@ -13,9 +13,13 @@ namespace Elysium {
 			Vulkan = 3
 		};
 
+		virtual void Init() = 0;
+
 		virtual void Clear(const vec4& color) = 0;
 
-		virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) = 0;
+		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) = 0;
+
+		virtual void SetViewport(u32 x, u32 y, u32 width, u32 height) = 0;
 
 		inline static API GetAPI() { return s_API; }
 	private:

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Elysium/Core.h"
+#include "Elysium/Core/Core.h"
 #include "Elysium/Renderer/Buffer.h"
 
 namespace Elysium {
@@ -19,7 +19,7 @@ namespace Elysium {
 		BufferLayout m_Layout;
 	};
 
-	class OpenGLIndexBuffer : public IndexBuffer{
+	class OpenGLIndexBuffer : public IndexBuffer {
 	public:
 		OpenGLIndexBuffer(u32* indices, u32 count);
 		virtual ~OpenGLIndexBuffer();

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Elysium/Window.h"
+#include "Elysium/Core/Window.h"
 
 #include <GLFW/glfw3.h>
 
@@ -35,7 +35,7 @@ namespace Elysium {
 		void RegisterCallbacks();
 	private:
 		GLFWwindow* m_Window;
-		RenderContext* m_Context;
+		Scope<RenderContext> m_Context;
 
 		struct WindowData {
 			std::string Title;

@@ -1,7 +1,7 @@
 #include "elypch.h"
 #include "Win32_Input.h"
-#include "Elysium/Application.h"
-#include "Elysium/KeyCodeTranslation.hpp"
+#include "Elysium/Core/Application.h"
+#include "Elysium/Core/KeyCodeTranslation.hpp"
 
 #include <GLFW/glfw3.h>
 

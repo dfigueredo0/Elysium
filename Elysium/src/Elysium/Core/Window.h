@@ -2,7 +2,7 @@
 
 #include "elypch.h"
 
-#include "Elysium/Core.h"
+#include "Elysium/Core/Core.h"
 #include "Elysium/Events/Event.h"
 
 
@@ -36,6 +36,6 @@ namespace Elysium {
 
 		virtual void* GetNativeWindow() const = 0;
 
-		static Window* Create(const WindowProps& props = WindowProps());
+		static Scope<Window> Create(const WindowProps& props = WindowProps());
 	};
 }

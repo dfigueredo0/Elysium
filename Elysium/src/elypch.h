@@ -8,12 +8,14 @@
 
 #include <string>
 #include <sstream>
+#include <array>
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Elysium/Log.h"
+#include "Elysium/Core/Log.h"
+#include "Elysium/Debug/Instrumentor.h"
 
 #ifdef _WIN32
-	#include <Windows.h>
+#include <Windows.h>
 #endif

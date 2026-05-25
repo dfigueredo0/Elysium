@@ -2,7 +2,7 @@
 
 #include "elypch.h"
 
-#include "Elysium/Core.h"
+#include "Elysium/Core/Core.h"
 
 namespace Elysium {
 	/*

@@ -141,7 +141,7 @@ namespace Elysium {
 		virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
 
-		static VertexBuffer* Create(float* vertices, u32 size);
+		static Ref<VertexBuffer> Create(float* vertices, u32 size);
 	};
 
 	class IndexBuffer {
@@ -153,6 +153,6 @@ namespace Elysium {
 
 		virtual u32 GetCount() const = 0;
 
-		static IndexBuffer* Create(u32* vertices, u32 size);
+		static Ref<IndexBuffer> Create(u32* vertices, u32 size);
 	};
 }

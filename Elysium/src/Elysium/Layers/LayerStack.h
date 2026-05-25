@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "Elysium/Core.h"
+#include "Elysium/Core/Core.h"
 #include "Layer.h"
 
 namespace Elysium {

@@ -6,7 +6,7 @@
 #include "Platform/OpenGL/OpenGLBuffer.h"
 
 namespace Elysium {
-	VertexBuffer* VertexBuffer::Create(float* vertices, u32 size)
+	Ref<VertexBuffer> VertexBuffer::Create(float* vertices, u32 size)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -14,7 +14,7 @@ namespace Elysium {
 			ELY_CORE_ASSERT(false, "Renderer API None is currently not supported!");
 			return nullptr;
 		case RenderAPI::API::OpenGL:
-			return new OpenGLVertexBuffer(vertices, size);
+			return std::make_shared<OpenGLVertexBuffer>(vertices, size);
 		case RenderAPI::API::DirectX3D:
 			ELY_CORE_ASSERT(false, "Renderer API DirectX3D is currently not supported!");
 			return nullptr;
@@ -26,7 +26,7 @@ namespace Elysium {
 		return nullptr;
 	}
 
-	IndexBuffer* IndexBuffer::Create(u32* indices, u32 size)
+	Ref<IndexBuffer> IndexBuffer::Create(u32* indices, u32 size)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -34,7 +34,7 @@ namespace Elysium {
 			ELY_CORE_ASSERT(false, "Renderer API None is currently not supported!");
 			return nullptr;
 		case RenderAPI::API::OpenGL:
-			return new OpenGLIndexBuffer(indices, size);
+			return std::make_shared<OpenGLIndexBuffer>(indices, size);
 		case RenderAPI::API::DirectX3D:
 			ELY_CORE_ASSERT(false, "Renderer API DirectX3D is currently not supported!");
 			return nullptr;
